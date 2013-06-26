@@ -6,6 +6,7 @@ public class Message {
 	public Message(String msg, String time, String id) {
 		this.msg = msg;
 		this.time = time;
+		
 		this.id = id;
 	}
 	
