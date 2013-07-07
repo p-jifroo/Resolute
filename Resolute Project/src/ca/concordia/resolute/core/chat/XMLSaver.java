@@ -19,8 +19,8 @@ public class XMLSaver implements ChatMessageListener{
 	
 	public XMLSaver(OutputStream outputStream) throws UnsupportedEncodingException, XMLStreamException, FactoryConfigurationError {
 		out = XMLOutputFactory.newInstance().createXMLStreamWriter(
-				new OutputStreamWriter(outputStream, "utf-8"));
-		out.writeStartDocument();
+				new OutputStreamWriter(outputStream, "UTF-8"));
+		out.writeStartDocument("UTF-8","1.0");
 		out.writeStartElement("CONVERSATION");
 	}
 
