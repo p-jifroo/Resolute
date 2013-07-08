@@ -19,6 +19,7 @@
 
   <ENGINE nickname="C45" implementationName="C4.5Weka"/>
 
+  
   <DATASET>
      <INSTANCE-TYPE>Age</INSTANCE-TYPE>
      <ATTRIBUTE>
@@ -28,14 +29,15 @@
 		 <FEATURE>Class</FEATURE>
 		 <CLASS/>
      </ATTRIBUTE>
-                
-     <ATTRIBUTELIST>
-		<NAME>ContexWord</NAME>
+  
+	<WINDOWSIZE windowSizeLeft="5" windowSizeRight="5"/>              
+	<ATTRIBUTELIST>
+		<NAME>Form</NAME>
 		<SEMTYPE>NOMINAL</SEMTYPE>
 		<TYPE>Token</TYPE>
 		<FEATURE>string</FEATURE>
-		<RANGE from="-5" to="5" />
-     </ATTRIBUTELIST>
+		<RANGE from="-5" to="5"/>
+	</ATTRIBUTELIST>
   </DATASET>
 
 </ML-CONFIG>

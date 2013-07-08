@@ -2,20 +2,16 @@ package ca.concordia.resolute.core.textmining;
 
 import gate.Annotation;
 import gate.AnnotationSet;
-import gate.Corpus;
 import gate.Document;
 import gate.Factory;
 import gate.FeatureMap;
 import gate.Gate;
-import gate.ProcessingResource;
 import gate.Utils;
 import gate.creole.ANNIEConstants;
 import gate.creole.AbstractLanguageAnalyser;
 import gate.creole.ExecutionException;
-import gate.creole.SerialAnalyserController;
 import gate.creole.metadata.CreoleResource;
 import gate.util.GateException;
-import gate.util.persistence.PersistenceManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,8 +21,8 @@ import java.util.TreeSet;
 
 import ca.concordia.resolute.datamining.AgeCandidDetector;
 
-@CreoleResource (name = "InstanceGenerator")
-public class InstanceGenerator extends AbstractLanguageAnalyser{
+@CreoleResource (name = "RuleBaseAgeDetection")
+public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 
 	/**
 	 * 
@@ -58,11 +54,12 @@ public class InstanceGenerator extends AbstractLanguageAnalyser{
 			for (int i = stWindows; i < enWindows; ++i){
 				contextWord.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
 			}
-			if (contextWord.contains("m") || contextWord.contains("asl")){
+			if (contextWord.contains("m") || contextWord.contains("asl") || contextWord.contains("f")){
 				Object oldAge = docFeatuers.get("Age");
 				String newAge = Utils.stringFor(getDocument(), ann);
 				String age = oldAge == null ? newAge : oldAge + ", " + newAge;
 				docFeatuers.put("Age", age);
+				ann.getFeatures().put("Class", "true");
 			}
 		}
 		
@@ -71,28 +68,15 @@ public class InstanceGenerator extends AbstractLanguageAnalyser{
 		}
 	}
 	
+	
 	public static void main(String[] args) throws IOException, GateException {
 		String testFile = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PervertedJustice/xml/batch 2/ekoplaya20.xml";
+		
 		Gate.init();
-		Gate.getCreoleRegister().registerComponent(AgeCandidDetector.class);
-		Gate.getCreoleRegister().registerComponent(InstanceGenerator.class);
-
-		SerialAnalyserController controller = (SerialAnalyserController) 
-				PersistenceManager.loadObjectFromFile(new File(new File( 
-						Gate.getPluginsHome(), ANNIEConstants.PLUGIN_DIR), 
-						ANNIEConstants.DEFAULT_FILE));
-
-
-		controller.add((ProcessingResource)Factory.createResource(AgeCandidDetector.class.getName()));
-		controller.add((ProcessingResource)Factory.createResource(InstanceGenerator.class.getName()));
-
+		RuleBaseAgeDetectorApp app = new RuleBaseAgeDetectorApp();
 		Document doc = Factory.newDocument(new File(testFile).toURI().toURL());
-		Corpus corpus = Factory.newCorpus("Corpus");
-		corpus.add(doc);
-
-		controller.setCorpus(corpus);
-		controller.execute();
-
-		System.out.println(doc.getFeatures().get("Age"));
+		
+		Document annotateAge = app.annotateAge(doc);
+		System.out.println(annotateAge.getFeatures().get("Age"));
 	}
 }
