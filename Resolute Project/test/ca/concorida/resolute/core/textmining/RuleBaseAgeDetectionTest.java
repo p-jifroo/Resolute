@@ -55,6 +55,7 @@ public class RuleBaseAgeDetectionTest {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void precision() throws GateException, IOException{
 		AnnotationEvaluation evaluator = new AnnotationEvaluation();
