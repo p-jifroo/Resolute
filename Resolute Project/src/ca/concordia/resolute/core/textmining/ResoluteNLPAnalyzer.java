@@ -23,15 +23,32 @@ import ca.concordia.resolute.core.chat.ChatMessageListener;
 import ca.concordia.resolute.core.chat.Conversation;
 import ca.concordia.resolute.core.chat.Message;
 
+/**
+ * An observer for the chat conversation ({@link Conversation}) in which do text mining on the chat messages and elicit 
+ * required information from it. 
+ * @author mjlaali
+ *
+ */
 public class ResoluteNLPAnalyzer implements ChatMessageListener{
 	
 	private SerialAnalyserController controller;
 	private Corpus corpus = Factory.newCorpus("Corpus");
 	private File filename;
 	
+	/**
+	 * Construct a {@link ResoluteNLPAnalyzer} and load a GATE application as text mining model.
+	 * @param gateAppFile
+	 * @throws PersistenceException
+	 * @throws ResourceInstantiationException
+	 * @throws IOException
+	 */
 	public ResoluteNLPAnalyzer(File gateAppFile) throws PersistenceException, ResourceInstantiationException, IOException {
-		controller = (SerialAnalyserController)
-				PersistenceManager.loadObjectFromFile(gateAppFile);
+		this((SerialAnalyserController)
+				PersistenceManager.loadObjectFromFile(gateAppFile));
+	}
+	
+	public ResoluteNLPAnalyzer(SerialAnalyserController controller) throws IOException, ResourceInstantiationException {
+		this.controller = controller;
 		controller.setCorpus(corpus);
 		
 		String property = "java.io.tmpdir";
@@ -39,6 +56,7 @@ public class ResoluteNLPAnalyzer implements ChatMessageListener{
 	    File dir = new File(tempDir);
 	    filename = File.createTempFile("resolute", ".tmp", dir);
 	}
+	
 
 	private void saveToTmpFile(String content) throws IOException{
 	    BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true));
@@ -46,6 +64,10 @@ public class ResoluteNLPAnalyzer implements ChatMessageListener{
 	    bw.close();
 	}
 	
+	/**
+	 * Any text mining process is done here. All text processes is model in the GATE application. The output of text mining
+	 * process is store in the conversation's GATE document.
+	 */
 	@Override
 	public void newChatMessage(Conversation conversation, Message msg) {
 		try {

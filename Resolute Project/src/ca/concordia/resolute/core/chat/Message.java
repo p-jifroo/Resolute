@@ -5,12 +5,23 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+/**
+ * Message class represents a text message in a chat.
+ * @author mjlaali
+ *
+ */
 public class Message {
 	public static final String XML_ATT_NAME_ID = "ID";
 	public static final String XML_ATT_NAME_TIME = "TIME";
 	public static final String XML_TAG_NAME_MESSAGE = "MESSAGE";
 	private String msg, time, id;
 
+	/**
+	 * Convention method to construct a Message class
+	 * @param msg the text of message
+	 * @param time the time of sending this text
+	 * @param id the chat ID of the person
+	 */
 	public Message(String msg, String time, String id) {
 		this.msg = convertToUTF8(msg);
 		this.time = time;
@@ -18,6 +29,11 @@ public class Message {
 		this.id = id;
 	}
 	
+	/**
+	 * Convert this message to XML. See {@link Conversation#toXML()} for more detail.
+	 * @param out an XMLStreamWriter to store the XML representaion of this class.
+	 * @throws XMLStreamException
+	 */
 	public void toXML(XMLStreamWriter out) throws XMLStreamException{
 		out.writeStartElement(XML_TAG_NAME_MESSAGE);
 		out.writeAttribute(XML_ATT_NAME_TIME, time);
@@ -41,6 +57,11 @@ public class Message {
 		System.out.println("Message.main()");
 	}
 	
+	/**
+	 * Convert a string to UTF-8 format and replace any forbidden UTF-8 character with a space
+	 * @param inString the input string
+	 * @return the converted string
+	 */
 	public static String convertToUTF8(String inString)
 	{
 	    if (inString == null) return null;
@@ -63,14 +84,26 @@ public class Message {
 
 	}
 	
+	/**
+	 * 
+	 * @return the text of chat message
+	 */
 	public String getMsg() {
 		return msg;
 	}
 	
+	/**
+	 * 
+	 * @return the id of person who send message
+	 */
 	public String getId() {
 		return id;
 	}
 	
+	/**
+	 * 
+	 * @return the time when chat message has been sent
+	 */
 	public String getTime() {
 		return time;
 	}

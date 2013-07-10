@@ -6,16 +6,24 @@ import gate.Utils;
 import gate.util.GateException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Iterator;
 import java.util.List;
 
 import ca.concorida.resolute.core.textmining.RuleBaseAgeDetectionTest;
 
+/**
+ * A class that is used for evaluation of annotated document in GATE with the Gold annotation. 
+ * @author mjlaali
+ *
+ */
 public class AnnotationEvaluation {
 	int cntIntersection, cntGold, cntOut;
 	
-	
+	/**
+	 * Compute the number of correct and incorrect annotation for a GATE document. 
+	 * @param gold gold annotations
+	 * @param out output annotations for testing purpose 
+	 */
 	public void evaluate(AnnotationSet gold, AnnotationSet out){
 		List<Annotation> annListGold = Utils.inDocumentOrder(gold);
 		List<Annotation> annListOut = Utils.inDocumentOrder(out);
@@ -64,13 +72,21 @@ public class AnnotationEvaluation {
 		}
 	}
 	
+	/**
+	 * computer precision of new annotation. run {@link #evaluate(AnnotationSet, AnnotationSet)} before running this method 
+	 * @return the precision 
+	 */
 	public double getPrecision(){
 		if (cntOut != 0)
 			return ((double)cntIntersection) / cntOut;
 		return 1.0; 
 			
 	}
-	
+
+	/**
+	 * computer recall of new annotation. run {@link #evaluate(AnnotationSet, AnnotationSet)} before running this method 
+	 * @return the recall
+	 */
 	public double getRecall(){
 		if (cntGold != 0)
 			return ((double)cntIntersection) / cntGold;

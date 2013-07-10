@@ -11,6 +11,11 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+/**
+ * A observer for the chat conversation that is store the chat message as an XML file.
+ * @author mjlaali
+ *
+ */
 public class XMLSaver implements ChatMessageListener{
 	private XMLStreamWriter out;
 	public XMLSaver(String fileName) throws UnsupportedEncodingException, FileNotFoundException, XMLStreamException, FactoryConfigurationError {

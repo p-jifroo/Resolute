@@ -1,4 +1,4 @@
-package ca.concordia.resolute.datamining;
+package ca.concordia.resolute.core.textmining.gate;
 
 import gate.Annotation;
 import gate.AnnotationSet;
@@ -19,6 +19,12 @@ import gate.util.persistence.PersistenceManager;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * A processing resource plugin for the GATE that annotated all the numbers between 9 to 99 in a document as a candidate of age
+ *  
+ * @author mjlaali
+ *
+ */
 @CreoleResource (name = "Age Candid Detector", comment = "This class extract the age of person from chat log")
 public class AgeCandidDetector extends AbstractLanguageAnalyser{
 
@@ -27,7 +33,9 @@ public class AgeCandidDetector extends AbstractLanguageAnalyser{
 	private final String TARGET_FEATURE_NAME = ANNIEConstants.TOKEN_KIND_FEATURE_NAME;
 	private final String TARGET_FEATURE_VALUE = "number";
 
+	/// a boolean feature in Token annotation for detection age.
 	public static final String TOKEN_AGE_FEATURE_NAME = "Age";
+	@Deprecated
 	public static final String AGE_ANNOTATION_TYPE = "Age";
 
 	private FeatureMap numberFeature;

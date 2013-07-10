@@ -14,6 +14,11 @@ import ca.concordia.resolute.core.chat.Conversation;
 import ca.concordia.resolute.core.chat.Message;
 import ca.concordia.resolute.core.chat.XMLSaver;
 
+/**
+ * This class loads text file chat conversation to a {@link Conversation}
+ * @author mjlaali
+ *
+ */
 public class PuntisDataReader {
 
 	private final String LINE_REGEX = "(.*)\\(([^)]*)\\):(.*)";
@@ -34,6 +39,12 @@ public class PuntisDataReader {
 		}
 	}
 	
+	/**
+	 * load a chat conversation
+	 * @param file a text file of chat conversation
+	 * @return loaded chat conversation
+	 * @throws IOException
+	 */
 	public Conversation importFromFile(File file) throws IOException{
 		
 		BufferedReader br = new BufferedReader(new FileReader(file));
@@ -50,6 +61,13 @@ public class PuntisDataReader {
 		return conversation;
 	}
 	
+	/**
+	 * convert all text chat conversations with ".txt" extension in a directory to XML file format
+	 * @param dir directory contains all text file
+	 * @throws IOException
+	 * @throws XMLStreamException
+	 * @throws FactoryConfigurationError
+	 */
 	public void convertToXML(File dir) throws IOException, XMLStreamException, FactoryConfigurationError{
 		for (File f: dir.listFiles()){
 			if (f.isFile() && f.getName().endsWith(".txt")){

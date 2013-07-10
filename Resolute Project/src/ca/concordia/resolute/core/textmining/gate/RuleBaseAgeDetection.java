@@ -1,4 +1,4 @@
-package ca.concordia.resolute.core.textmining;
+package ca.concordia.resolute.core.textmining.gate;
 
 import gate.Annotation;
 import gate.AnnotationSet;
@@ -19,8 +19,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import ca.concordia.resolute.datamining.AgeCandidDetector;
 
+/**
+ * A rule base processing resource that extract the age of a person from his/her chat message.
+ * @author mjlaali
+ *
+ */
 @CreoleResource (name = "RuleBaseAgeDetection")
 public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 
@@ -32,6 +36,7 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 	@Override
 	public void execute() throws ExecutionException {
 		AnnotationSet docAnnSet = getDocument().getAnnotations();
+		@SuppressWarnings("deprecation")
 		AnnotationSet ageCandid = docAnnSet.get(AgeCandidDetector.AGE_ANNOTATION_TYPE);
 		List<Annotation> tokens = Utils.inDocumentOrder(docAnnSet.get(ANNIEConstants.TOKEN_ANNOTATION_TYPE));
 		
@@ -54,7 +59,8 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 			for (int i = stWindows; i < enWindows; ++i){
 				contextWord.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
 			}
-			if (contextWord.contains("m") || contextWord.contains("asl") || contextWord.contains("f")){
+			if (contextWord.contains("m") || contextWord.contains("asl") 
+					|| contextWord.contains("f") || contextWord.contains("im") ){
 				Object oldAge = docFeatuers.get("Age");
 				String newAge = Utils.stringFor(getDocument(), ann);
 				String age = oldAge == null ? newAge : oldAge + ", " + newAge;

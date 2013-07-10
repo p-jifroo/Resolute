@@ -27,8 +27,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.concordia.resolute.core.evaluation.AnnotationEvaluation;
-import ca.concordia.resolute.core.textmining.RuleBaseAgeDetectorApp;
-import ca.concordia.resolute.datamining.AgeCandidDetector;
+import ca.concordia.resolute.core.textmining.gate.AgeCandidDetector;
+import ca.concordia.resolute.core.textmining.gate.RuleBaseAgeDetectorApp;
 
 public class RuleBaseAgeDetectionTest {
 	private static Corpus persistCorp = null;

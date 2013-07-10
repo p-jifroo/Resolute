@@ -1,4 +1,4 @@
-package ca.concordia.resolute.core.textmining;
+package ca.concordia.resolute.core.textmining.gate;
 
 import gate.Corpus;
 import gate.Document;
@@ -15,8 +15,12 @@ import gate.util.persistence.PersistenceManager;
 import java.io.File;
 import java.io.IOException;
 
-import ca.concordia.resolute.datamining.AgeCandidDetector;
 
+/**
+ * A GATE application that handles age extraction from the chat message.
+ * @author mjlaali
+ *
+ */
 public class RuleBaseAgeDetectorApp {
 
 	private SerialAnalyserController controller;
@@ -46,5 +50,9 @@ public class RuleBaseAgeDetectorApp {
 		corpus.clear();
 
 		return annotatedDoc;
+	}
+	
+	public SerialAnalyserController getController() {
+		return controller;
 	}
 }
