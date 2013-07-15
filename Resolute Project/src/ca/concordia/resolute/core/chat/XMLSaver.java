@@ -30,7 +30,7 @@ public class XMLSaver implements ChatMessageListener{
 	}
 
 	@Override
-	public void newChatMessage(Conversation conversation, Message msg) {
+	public void newChatMessage(ConversationAPI conversation, Message msg) {
 		try {
 			msg.toXML(out);
 		} catch (XMLStreamException e) {

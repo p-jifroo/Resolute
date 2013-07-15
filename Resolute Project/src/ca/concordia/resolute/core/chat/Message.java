@@ -30,7 +30,7 @@ public class Message {
 	}
 	
 	/**
-	 * Convert this message to XML. See {@link Conversation#toXML()} for more detail.
+	 * Convert this message to XML. See {@link ConversationModel#toXML()} for more detail.
 	 * @param out an XMLStreamWriter to store the XML representaion of this class.
 	 * @throws XMLStreamException
 	 */

@@ -10,12 +10,13 @@ import java.util.regex.Pattern;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
-import ca.concordia.resolute.core.chat.Conversation;
+import ca.concordia.resolute.core.chat.ConversationModel;
+import ca.concordia.resolute.core.chat.ConversationAPI;
 import ca.concordia.resolute.core.chat.Message;
 import ca.concordia.resolute.core.chat.XMLSaver;
 
 /**
- * This class loads text file chat conversation to a {@link Conversation}
+ * This class loads text file chat conversation to a {@link ConversationModel}
  * @author mjlaali
  *
  */
@@ -45,11 +46,11 @@ public class PuntisDataReader {
 	 * @return loaded chat conversation
 	 * @throws IOException
 	 */
-	public Conversation importFromFile(File file) throws IOException{
+	public ConversationAPI importFromFile(File file) throws IOException{
 		
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line;
-		Conversation conversation = new Conversation();
+		ConversationAPI conversation = new ConversationModel();
 		while ((line = br.readLine()) != null){
 			Message msg = parseLine(line);
 			if (msg != null)
@@ -71,7 +72,7 @@ public class PuntisDataReader {
 	public void convertToXML(File dir) throws IOException, XMLStreamException, FactoryConfigurationError{
 		for (File f: dir.listFiles()){
 			if (f.isFile() && f.getName().endsWith(".txt")){
-				Conversation conversation = importFromFile(f);
+				ConversationAPI conversation = importFromFile(f);
 				conversation.addListener(new XMLSaver(f.getAbsolutePath().replace(".txt", ".xml")));
 				conversation.simulate();
 			}

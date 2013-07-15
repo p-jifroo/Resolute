@@ -19,12 +19,13 @@ import java.io.UnsupportedEncodingException;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
+import ca.concordia.resolute.core.chat.ConversationAPI;
 import ca.concordia.resolute.core.chat.ChatMessageListener;
-import ca.concordia.resolute.core.chat.Conversation;
+import ca.concordia.resolute.core.chat.ConversationModel;
 import ca.concordia.resolute.core.chat.Message;
 
 /**
- * An observer for the chat conversation ({@link Conversation}) in which do text mining on the chat messages and elicit 
+ * An observer for the chat conversation ({@link ConversationModel}) in which do text mining on the chat messages and elicit 
  * required information from it. 
  * @author mjlaali
  *
@@ -59,6 +60,7 @@ public class ResoluteNLPAnalyzer implements ChatMessageListener{
 	
 
 	private void saveToTmpFile(String content) throws IOException{
+		filename.delete();
 	    BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true));
 	    bw.write(content);
 	    bw.close();
@@ -69,7 +71,7 @@ public class ResoluteNLPAnalyzer implements ChatMessageListener{
 	 * process is store in the conversation's GATE document.
 	 */
 	@Override
-	public void newChatMessage(Conversation conversation, Message msg) {
+	public void newChatMessage(ConversationAPI conversation, Message msg) {
 		try {
 			saveToTmpFile(conversation.toXML());
 			Document doc = Factory.newDocument(filename.toURI().toURL());
@@ -77,7 +79,8 @@ public class ResoluteNLPAnalyzer implements ChatMessageListener{
 			controller.execute();
 			corpus.clear();
 			Object prevDoc = conversation.setDoc(doc);
-			Factory.deleteResource((Resource) prevDoc);
+			if (prevDoc != null)
+				Factory.deleteResource((Resource) prevDoc);
 		} catch (ResourceInstantiationException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
