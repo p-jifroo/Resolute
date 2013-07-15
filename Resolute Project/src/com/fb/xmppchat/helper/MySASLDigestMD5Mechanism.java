@@ -25,13 +25,13 @@ public class MySASLDigestMD5Mechanism extends SASLMechanism
         super(saslAuthentication);
     }
     
-    protected void authenticate()
+	protected void authenticate()
         throws IOException, XMPPException
     {
         String mechanisms[] = {
             getName()
         };
-        java.util.Map props = new HashMap();
+        java.util.Map<String, ?> props = new HashMap<>();
         sc = Sasl.createSaslClient(mechanisms, null, "xmpp", hostname, props, this);
         super.authenticate();
     }
@@ -45,7 +45,7 @@ public class MySASLDigestMD5Mechanism extends SASLMechanism
         String mechanisms[] = {
             getName()
         };
-        java.util.Map props = new HashMap();
+        java.util.Map<String, ?> props = new HashMap<>();
         sc = Sasl.createSaslClient(mechanisms, null, "xmpp", host, props, this);
         super.authenticate();
     }
@@ -56,7 +56,7 @@ public class MySASLDigestMD5Mechanism extends SASLMechanism
         String mechanisms[] = {
             getName()
         };
-        java.util.Map props = new HashMap();
+        java.util.Map<String, ?> props = new HashMap<>();
         sc = Sasl.createSaslClient(mechanisms, null, "xmpp", host, props, cbh);
         super.authenticate();
     }
