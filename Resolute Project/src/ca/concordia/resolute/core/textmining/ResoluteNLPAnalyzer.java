@@ -33,7 +33,7 @@ import ca.concordia.resolute.core.chat.Message;
 public class ResoluteNLPAnalyzer implements ChatMessageListener{
 	
 	private SerialAnalyserController controller;
-	private Corpus corpus = Factory.newCorpus("Corpus");
+	private Corpus corpus = Factory.newCsdaus("Corpus");
 	private File filename;
 	
 	/**
