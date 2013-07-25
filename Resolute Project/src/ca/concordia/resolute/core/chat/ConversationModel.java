@@ -10,6 +10,8 @@ import java.util.List;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
+import ca.concordia.resolute.core.chat.listener.XMLSaver;
+
 /**
  * A class that used for the modeling a chat conversation.
  * @author mjlaali

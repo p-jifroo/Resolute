@@ -13,7 +13,7 @@ import javax.xml.stream.XMLStreamException;
 import ca.concordia.resolute.core.chat.ConversationModel;
 import ca.concordia.resolute.core.chat.ConversationAPI;
 import ca.concordia.resolute.core.chat.Message;
-import ca.concordia.resolute.core.chat.XMLSaver;
+import ca.concordia.resolute.core.chat.listener.XMLSaver;
 
 /**
  * This class loads text file chat conversation to a {@link ConversationModel}

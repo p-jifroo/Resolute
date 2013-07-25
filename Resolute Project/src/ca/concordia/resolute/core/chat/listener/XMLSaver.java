@@ -1,4 +1,4 @@
-package ca.concordia.resolute.core.chat;
+package ca.concordia.resolute.core.chat.listener;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,6 +10,10 @@ import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+
+import ca.concordia.resolute.core.chat.ChatMessageListener;
+import ca.concordia.resolute.core.chat.ConversationAPI;
+import ca.concordia.resolute.core.chat.Message;
 
 /**
  * A observer for the chat conversation that is store the chat message as an XML file.

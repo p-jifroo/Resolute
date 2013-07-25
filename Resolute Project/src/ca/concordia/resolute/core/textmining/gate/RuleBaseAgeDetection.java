@@ -71,7 +71,7 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 		}
 		
 		if (docFeatuers.get(AGE_DOC_FEATURE) == null){
-			docFeatuers.put(AGE_DOC_FEATURE, "-1");
+			docFeatuers.put(AGE_DOC_FEATURE, "?");
 		}
 	}
 	
