@@ -28,6 +28,7 @@ import java.util.TreeSet;
 @CreoleResource (name = "RuleBaseAgeDetection")
 public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 
+	public static final String AGE_DOC_FEATURE = "Age";
 	/**
 	 * 
 	 */
@@ -61,16 +62,16 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 			}
 			if (contextWord.contains("m") || contextWord.contains("asl") 
 					|| contextWord.contains("f") || contextWord.contains("im") ){
-				Object oldAge = docFeatuers.get("Age");
+				Object oldAge = docFeatuers.get(AGE_DOC_FEATURE);
 				String newAge = Utils.stringFor(getDocument(), ann);
 				String age = oldAge == null ? newAge : oldAge + ", " + newAge;
-				docFeatuers.put("Age", age);
+				docFeatuers.put(AGE_DOC_FEATURE, age);
 				ann.getFeatures().put("Class", "true");
 			}
 		}
 		
-		if (docFeatuers.get("Age") == null){
-			docFeatuers.put("Age", "-1");
+		if (docFeatuers.get(AGE_DOC_FEATURE) == null){
+			docFeatuers.put(AGE_DOC_FEATURE, "?");
 		}
 	}
 	
@@ -83,6 +84,6 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 		Document doc = Factory.newDocument(new File(testFile).toURI().toURL());
 		
 		Document annotateAge = app.annotateAge(doc);
-		System.out.println(annotateAge.getFeatures().get("Age"));
+		System.out.println(annotateAge.getFeatures().get(AGE_DOC_FEATURE));
 	}
 }

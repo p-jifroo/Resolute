@@ -18,13 +18,13 @@ import org.jivesoftware.smack.XMPPException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import ca.concordia.resolute.core.chat.ConsoleMessage;
 import ca.concordia.resolute.core.chat.ConversationAPI;
 import ca.concordia.resolute.core.chat.ConversationModel;
 import ca.concordia.resolute.core.chat.FacebookAPI;
 import ca.concordia.resolute.core.chat.FacebookConversation;
 import ca.concordia.resolute.core.chat.Message;
-import ca.concordia.resolute.core.textmining.ResoluteNLPAnalyzer;
+import ca.concordia.resolute.core.chat.listener.ConsoleMessage;
+import ca.concordia.resolute.core.chat.listener.ResoluteNLPAnalyzer;
 import ca.concordia.resolute.core.textmining.gate.RuleBaseAgeDetectorApp;
 
 public class FacebookAPITest {

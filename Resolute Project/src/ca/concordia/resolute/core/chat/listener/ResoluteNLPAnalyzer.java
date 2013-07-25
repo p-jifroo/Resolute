@@ -1,4 +1,4 @@
-package ca.concordia.resolute.core.textmining;
+package ca.concordia.resolute.core.chat.listener;
 
 import gate.Corpus;
 import gate.Document;
