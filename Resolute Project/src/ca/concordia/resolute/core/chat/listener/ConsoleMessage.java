@@ -1,10 +1,13 @@
-package ca.concordia.resolute.core.chat;
+package ca.concordia.resolute.core.chat.listener;
 
 import gate.Document;
 
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.packet.Message;
+
+import ca.concordia.resolute.core.chat.ChatMessageListener;
+import ca.concordia.resolute.core.chat.ConversationAPI;
 
 public class ConsoleMessage implements MessageListener, ChatMessageListener{
 

@@ -34,7 +34,6 @@ public class RuleBaseAgeDetectorApp {
 						Gate.getPluginsHome(), ANNIEConstants.PLUGIN_DIR), 
 						ANNIEConstants.DEFAULT_FILE));
 
-
 		controller.add((ProcessingResource)Factory.createResource(AgeCandidDetector.class.getName()));
 		controller.add((ProcessingResource)Factory.createResource(RuleBaseAgeDetection.class.getName()));
 
