@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ca.concordia.resolute.core.evaluation.AnnotationEvaluation;
@@ -32,30 +33,34 @@ import ca.concordia.resolute.core.textmining.gate.RuleBaseAgeDetectorApp;
 
 public class RuleBaseAgeDetectionTest {
 	private static Corpus persistCorp = null;
+	
+	public static Corpus readPresistanceCorpus(File path) throws PersistenceException, MalformedURLException, ResourceInstantiationException{
+		//reopen it
+		SerialDataStore sds = new SerialDataStore(path.toURI().toURL().toString());
+		sds.open();
+		@SuppressWarnings("unchecked")
+		List<String> corpusID = sds.getLrIds(SerialCorpusImpl.class.getName());
+
+		FeatureMap corpFeatures = Factory.newFeatureMap();
+		corpFeatures.put(DataStore.LR_ID_FEATURE_NAME, corpusID.get(0));
+		corpFeatures.put(DataStore.DATASTORE_FEATURE_NAME, sds);
+		
+		//tell the factory to load the Serial Corpus with the specified ID from the specified  datastore
+		return (Corpus)Factory.createResource(SerialCorpusImpl.class.getName(), corpFeatures);
+	}
+	
 	@BeforeClass
 	public static void init() throws GateException, MalformedURLException{
 		//		Gate.init();
 		System.out.println("RuleBaseAgeDetectionTest.init()");
 		Gate.init();
 		final File DS_DIR = new File("/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/index");
-		//reopen it
-		SerialDataStore sds = new SerialDataStore(DS_DIR.toURI().toURL().toString());
-		sds.open();
-		@SuppressWarnings("unchecked")
-		List<String> corpusID = sds.getLrIds(SerialCorpusImpl.class.getName());
-		System.out.println(corpusID + " -> " +corpusID.get(0).getClass().getName());
-
-		FeatureMap corpFeatures = Factory.newFeatureMap();
-		corpFeatures.put(DataStore.LR_ID_FEATURE_NAME, corpusID.get(0));
-		corpFeatures.put(DataStore.DATASTORE_FEATURE_NAME, sds);
-
-		
-		//tell the factory to load the Serial Corpus with the specified ID from the specified  datastore
-		persistCorp = (Corpus)Factory.createResource(SerialCorpusImpl.class.getName(), corpFeatures);
+		persistCorp = readPresistanceCorpus(DS_DIR);
 
 	}
 
 	@SuppressWarnings("deprecation")
+	@Ignore
 	@Test
 	public void precision() throws GateException, IOException{
 		AnnotationEvaluation evaluator = new AnnotationEvaluation();

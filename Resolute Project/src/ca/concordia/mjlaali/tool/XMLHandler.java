@@ -1,4 +1,4 @@
-package ca.concordia.resolute.tool;
+package ca.concordia.mjlaali.tool;
 
 import java.io.File;
 import java.io.IOException;

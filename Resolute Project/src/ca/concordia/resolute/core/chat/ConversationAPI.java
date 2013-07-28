@@ -4,6 +4,7 @@ import gate.Document;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
@@ -54,7 +55,9 @@ public interface ConversationAPI {
 	 * @throws XMLStreamException
 	 * @throws FactoryConfigurationError
 	 */
-	public abstract String toXML() throws UnsupportedEncodingException,
+	public abstract String toXML(Map<String, String> conversationAttributes) throws UnsupportedEncodingException,
 			XMLStreamException, FactoryConfigurationError;
+	
+//	public abstract void put(String key, String value);
 
 }

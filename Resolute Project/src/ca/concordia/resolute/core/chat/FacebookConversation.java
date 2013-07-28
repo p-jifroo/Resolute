@@ -3,7 +3,10 @@ package ca.concordia.resolute.core.chat;
 import gate.Document;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
@@ -69,16 +72,20 @@ public class FacebookConversation implements ConversationAPI, MessageListener{
 	}
 
 	@Override
-	public String toXML() throws UnsupportedEncodingException,
+	public String toXML(Map<String, String> conversationAttributes) throws UnsupportedEncodingException,
 	XMLStreamException, FactoryConfigurationError {
-		return datamodel.toXML();
+		return datamodel.toXML(conversationAttributes);
 	}
 
 	@Override
 	public void processMessage(Chat chat,
 			org.jivesoftware.smack.packet.Message message) {
 		if ((message != null) && (message.getBody() != null)) {
-			Message msg = new Message(message.getBody(), "", clienUsername);
+			Calendar cal = Calendar.getInstance();
+			cal.getTime();
+			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+			Message msg = new Message(message.getBody(), sdf.format(cal.getTime()), clienUsername);
 			datamodel.addMessage(msg);
 		}
 

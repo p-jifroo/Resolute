@@ -6,6 +6,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
@@ -21,7 +25,7 @@ public class ConversationModel implements ConversationAPI {
 	private List<Message> msgs = new LinkedList<>();
 	private List<ChatMessageListener> listeners = new LinkedList<>();
 	private Document doc;
-	
+	private Set<String> users = new TreeSet<>();
 
 	public ConversationModel() {
 	}
@@ -39,6 +43,7 @@ public class ConversationModel implements ConversationAPI {
 	@Override
 	public synchronized void addMessage(Message msg){
 		msgs.add(msg);
+		users.add(msg.getId());
 		notifyChange(msg);
 	}
 	
@@ -103,9 +108,16 @@ public class ConversationModel implements ConversationAPI {
 	 * @see ca.concordia.resolute.core.chat.ConversationAPI#toXML()
 	 */
 	@Override
-	public synchronized String toXML() throws UnsupportedEncodingException, XMLStreamException, FactoryConfigurationError{
+	public synchronized String toXML(Map<String, String> conversationAttributes) throws UnsupportedEncodingException, XMLStreamException, FactoryConfigurationError{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		XMLSaver xmlSaver = new XMLSaver(baos);
+		if (conversationAttributes == null)
+			conversationAttributes = new TreeMap<>();
+		else
+			conversationAttributes = new TreeMap<>(conversationAttributes);
+		
+		conversationAttributes.put("users", users.toString());
+		
+		XMLSaver xmlSaver = new XMLSaver(baos, conversationAttributes);
 		for (Message msg: msgs)
 			xmlSaver.newChatMessage(this, msg);
 		xmlSaver.endChat();
