@@ -4,8 +4,8 @@ import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Document;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import weka.core.Instances;
 import ca.concordia.mjlaali.gate.ml.wekaExporter.WekaAttributeExporter;
@@ -41,7 +41,7 @@ public class FeatureValue extends CompositionAttribute{
 		AnnotationSet tokens = annotations.get(typeName, 
 				instance.getStartNode().getOffset(), instance.getEndNode().getOffset());
 
-		Set<String> words = new TreeSet<>();
+		List<String> words = new LinkedList<>();
 		for (Annotation ann: tokens){
 			String strWord = ann.getFeatures().get(featureName).toString();
 			words.add(strWord);

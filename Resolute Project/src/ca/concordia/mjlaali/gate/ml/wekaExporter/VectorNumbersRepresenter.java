@@ -1,28 +1,27 @@
 package ca.concordia.mjlaali.gate.ml.wekaExporter;
 
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 import java.util.Set;
 
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 
-public class VectorModel implements NumberRepresenter{
+public class VectorNumbersRepresenter implements NumberRepresenter{
 	private FastVector booleanValue = new FastVector();
 	private FastVector atts;
 
-	public VectorModel() {
+	public VectorNumbersRepresenter() {
 		booleanValue.addElement("0");
 		booleanValue.addElement("1");
 	}
 	
 	@Override
-	public void setWords(Map<String, Integer> wordsToId) {
-		atts = new FastVector(wordsToId.size());
+	public void setWords(List<String> words) {
+		atts = new FastVector(words.size());
 		
-		for (Entry<String, Integer> wordID: wordsToId.entrySet()){
-			atts.addElement(new Attribute(wordID.getKey(), booleanValue));
+		for (String word: words){
+			atts.addElement(new Attribute(word, booleanValue));
 		}
 	}
 

@@ -1,8 +1,7 @@
 package ca.concordia.mjlaali.gate.ml.wekaExporter;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import weka.core.Attribute;
 import weka.core.FastVector;
@@ -12,9 +11,9 @@ public class NumeratorRepresenter implements NumberRepresenter{
 	private FastVector att = new FastVector();
 	
 	@Override
-	public void setWords(Map<String, Integer> wordsToId) {
-		for (Entry<String, Integer> wordID: wordsToId.entrySet()){
-			att.addElement(wordID.getKey());
+	public void setWords(List<String> words) {
+		for (String word: words){
+			att.addElement(word);
 		}
 	}
 

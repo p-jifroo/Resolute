@@ -26,21 +26,24 @@ public class FeatureExtractor extends AbstractLanguageAnalyser implements Contro
 	private InstanceExtractor instanceExtractor;
 	private AttributeCalculator attributeCalculator;
 	private String exportFileName;
+	private boolean manual;
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 
 	@Override
 	public void controllerExecutionStarted(Controller c)
 			throws ExecutionException {
-		//TODO: load or reset model here
 	}
+	
 	@Override
 	public void controllerExecutionFinished(Controller c)
 			throws ExecutionException {
+		if (!manual)
+			exportFeature();
+	}
+
+	public void exportFeature() {
 		Instances dataSet = attributeCalculator.getInstances();
 		
 		NonSparseToSparse nonSparseToSparse = new NonSparseToSparse();
@@ -54,7 +57,6 @@ public class FeatureExtractor extends AbstractLanguageAnalyser implements Contro
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 	
 	@Override
@@ -83,5 +85,9 @@ public class FeatureExtractor extends AbstractLanguageAnalyser implements Contro
 	
 	public void setInstanceExtractor(InstanceExtractor instanceExtractor) {
 		this.instanceExtractor = instanceExtractor;
+	}
+	
+	public void setManual(boolean manual) {
+		this.manual = manual;
 	}
 }
