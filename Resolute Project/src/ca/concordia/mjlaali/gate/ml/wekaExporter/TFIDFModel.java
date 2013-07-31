@@ -6,117 +6,53 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.document.Field.TermVector;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermEnum;
-import org.apache.lucene.index.TermFreqVector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 
 public class TFIDFModel implements WordIndexer{
-	public static final String NOT_SEEN = "NOT_SEEN";
-	private static final String IDX = "idx";
-	private static final String WORDS = "words";
-	private IndexWriter writer;
+	enum IndexMode{
+		append, create, open
+	}
+	static final String IDX = "idx";
+	static final String WORDS = "words";
 	private int instanceCount;
 	private int dfMin;
 	private double dfMaxPercentage;
-	private Directory dir;
+	private Directory wordsdir, documentDir;
 	private IndexReader reader;
+	private Analyzer analyzer;
+	private int create;
 
-	class InstanceIterator implements Iterator<Set<Integer>>{
-		private int currentDocIndex = 0;
-		private IndexReader reader;
-		private Map<String, Integer> wordsToId = new TreeMap<>();
-		
-		public InstanceIterator(Directory dir) throws CorruptIndexException, IOException {
-			reader = IndexReader.open(dir);
-			List<String> words = getWords();
-			int idx = 0;
-			for (String word: words){
-				wordsToId.put(word, idx);
-				idx++;
-			}
-		}
-		
-
-		@Override
-		public boolean hasNext() {
-			if (currentDocIndex < reader.numDocs())
-				return true;
-
-			try {
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return false;
-		}
-
-		@Override
-		public Set<Integer> next() {
-			try {
-				Document doc = reader.document(currentDocIndex);
-				Fieldable fieldable = doc.getFieldable(IDX);
-				if (!fieldable.stringValue().equals("" + currentDocIndex))
-					throw new RuntimeException("Index of document and iteration are not the same");
-				
-				TermFreqVector termFreqVector = reader.getTermFreqVector(currentDocIndex, WORDS);
-				Set<Integer> wordsId = new TreeSet<>(); 
-				for (String word: termFreqVector.getTerms()){
-					Integer idx = wordsToId.get(word);
-					if (idx != null)
-						wordsId.add(idx);
-					else
-						wordsId.add(wordsToId.get(NOT_SEEN));
-				}
-				++currentDocIndex;
-				return wordsId;
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			return null;
-		}
-
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-		
-	}
-	
-	public TFIDFModel(String indexPath, boolean create, int dfMin, double dfMaxPercentage) throws IOException {
+	public TFIDFModel(String indexPath, int create, int dfMin, double dfMaxPercentage) throws IOException {
 		this.dfMin = dfMin;
+		this.create = create;
 		this.dfMaxPercentage = dfMaxPercentage;
-		dir = FSDirectory.open(new File(indexPath));
-		Analyzer analyzer = new WhitespaceAnalyzer(Version.LUCENE_35);
-		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_35, analyzer);
-		if (create) {
+		
+		wordsdir = FSDirectory.open(new File(indexPath));
+		analyzer = new WhitespaceAnalyzer(Version.LUCENE_35);
+		
+		if (create == 0) {
 			// Create a new index in the directory, removing any
 			// previously indexed documents:
-			iwc.setOpenMode(OpenMode.CREATE);
+			documentDir = wordsdir;
 		} else {
 			// Add new documents to an existing index:
-			iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
+			documentDir = new RAMDirectory();
 		}
 		
 		// Optional: for better indexing performance, if you
@@ -124,14 +60,12 @@ public class TFIDFModel implements WordIndexer{
 		// buffer.  But if you do this, increase the max heap
 		// size to the JVM (eg add -Xmx512m or -Xmx1g):
 		//
-		iwc.setRAMBufferSizeMB(256.0);
-		writer = new IndexWriter(dir, iwc);
 	}
 
 	@Override
 	public Iterator<Set<Integer>> iterator() {
 		try {
-			return new InstanceIterator(dir);
+			return new InstanceIterator(getWords(), documentDir);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
@@ -140,27 +74,47 @@ public class TFIDFModel implements WordIndexer{
 
 	@Override
 	public void index(List<String> words) {
-		StringBuilder strWords = new StringBuilder();
-		for (String word: words){
-			strWords.append(word);
-			strWords.append(" ");
+		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_35, analyzer);
+		if (create >= 0){
+			iwc.setOpenMode(OpenMode.CREATE);
+			instanceCount = 0;
 		}
-		Document doc = new Document();
-		doc.add(new Field(WORDS, strWords.toString(), Field.Store.YES, Field.Index.ANALYZED, TermVector.YES));
-		doc.add(new Field(IDX, "" + instanceCount++, Field.Store.YES, Field.Index.NO));
+		else 
+			iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
+		
+		if (create == 0)
+			create = -1;
+		IndexWriter writer = null;
 		try {
+			writer = new IndexWriter(documentDir, iwc);
+			StringBuilder strWords = new StringBuilder();
+			for (String word: words){
+				strWords.append(word);
+				strWords.append(" ");
+			}
+			Document doc = new Document();
+			doc.add(new Field(WORDS, strWords.toString(), Field.Store.YES, Field.Index.ANALYZED, TermVector.YES));
+			doc.add(new Field(IDX, "" + instanceCount++, Field.Store.YES, Field.Index.NO));
+
 			writer.addDocument(doc);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} finally{
+			if (writer != null){
+				try {
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
 	@Override
 	public List<String> getWords() {
 		try {
-			writer.close();
 			List<String> words = new LinkedList<>();
-			reader = IndexReader.open(dir);
+			reader = IndexReader.open(wordsdir);
 			long dfMax = Math.round(dfMaxPercentage * reader.numDocs());
 			TermEnum termEnum = reader.terms();
 			while (termEnum.next()) {
@@ -170,7 +124,6 @@ public class TFIDFModel implements WordIndexer{
 					words.add(term.text()); 
 				}
 			}
-			words.add(NOT_SEEN);
 			termEnum.close(); 
 			reader.close();
 			return words;
@@ -182,12 +135,24 @@ public class TFIDFModel implements WordIndexer{
 	}
 
 	public static void main(String[] args) throws IOException {
-		TFIDFModel tfidfModel = new TFIDFModel("output/luceneidx", true, 1, 0.5);
+		TFIDFModel tfidfModel = new TFIDFModel("output/luceneidx", 0, 1, 0.5);
 		tfidfModel.index(Arrays.asList(new String[]{"it", "is", "test"}));
 		tfidfModel.index(Arrays.asList(new String[]{"another", "lucene", "test"}));
 		System.out.println(tfidfModel.getWords());
 		Iterator<Set<Integer>> iterator = tfidfModel.iterator();
 		while(iterator.hasNext())
 			System.out.println(iterator.next());
+		
+		tfidfModel = new TFIDFModel("output/luceneidx", 1, 1, 0.5);
+		tfidfModel.index(Arrays.asList(new String[]{"it", "is1", "test"}));
+		System.out.println(tfidfModel.getWords());
+		iterator = tfidfModel.iterator();
+		while(iterator.hasNext())
+			System.out.println(iterator.next());
+		tfidfModel.index(Arrays.asList(new String[]{"another", "lucene", "test"}));
+		iterator = tfidfModel.iterator();
+		while(iterator.hasNext())
+			System.out.println(iterator.next());
+
 	}
 }

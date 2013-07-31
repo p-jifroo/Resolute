@@ -23,10 +23,20 @@ import org.junit.Test;
 
 import ca.concordia.resolute.datamining.PANConverter;
 
+/**
+ * this class used for learning gate api test
+ * @author mjlaali
+ *
+ */
 public class GATEApi {
 
 
 	public static SerialAnalyserController controller;
+	/**
+	 * initialized the gate
+	 * @throws GateException
+	 * @throws IOException
+	 */
 	@BeforeClass
 	public static void init() throws GateException, IOException{
 		Gate.init();
@@ -37,6 +47,10 @@ public class GATEApi {
 
 	}
 
+	/**
+	 * deleted a folder
+	 * @param file
+	 */
 	public void deleteFile(File file){
 		if (file.isDirectory())
 			for (File f: file.listFiles())
@@ -45,6 +59,15 @@ public class GATEApi {
 		file.delete();
 	}
 
+	/**
+	 * Verify the persistence api of gate
+	 * @throws ResourceInstantiationException
+	 * @throws MalformedURLException
+	 * @throws ExecutionException
+	 * @throws PersistenceException
+	 * @throws UnsupportedOperationException
+	 * @throws SecurityException
+	 */
 	@Test
 	public void presistOutput() throws ResourceInstantiationException, MalformedURLException, ExecutionException, PersistenceException, UnsupportedOperationException, SecurityException{
 		String sampelDocXMLFile = PANConverter.PAN_FLD + "xml/0a0acab63770dcec26a3c5e5b4cf2d30.xml";

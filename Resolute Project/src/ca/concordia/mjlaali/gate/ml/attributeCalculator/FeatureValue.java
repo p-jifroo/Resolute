@@ -4,9 +4,11 @@ import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Document;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import weka.core.Instance;
 import weka.core.Instances;
 import ca.concordia.mjlaali.gate.ml.wekaExporter.WekaAttributeExporter;
 
@@ -54,5 +56,13 @@ public class FeatureValue extends CompositionAttribute{
 	public Instances getMyInstances() {
 		return wekaExporter.getInstances("BagOfWord");
 	}
+
+
+	@Override
+	protected Iterator<Instance> myIterator() {
+		return wekaExporter.iterator();
+	}
+
+
 
 }

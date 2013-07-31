@@ -9,11 +9,13 @@ import gate.creole.ControllerAwarePR;
 import gate.creole.ExecutionException;
 
 import java.io.File;
+import java.util.Iterator;
 
+import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.SparseInstance;
 import weka.core.converters.ArffSaver;
-import weka.filters.Filter;
-import weka.filters.unsupervised.instance.NonSparseToSparse;
+import weka.core.converters.Saver;
 import ca.concordia.mjlaali.gate.ml.attributeCalculator.AttributeCalculator;
 
 /**
@@ -44,19 +46,28 @@ public class FeatureExtractor extends AbstractLanguageAnalyser implements Contro
 	}
 
 	public void exportFeature() {
-		Instances dataSet = attributeCalculator.getInstances();
+		Instances structure = attributeCalculator.getInstances();
 		
-		NonSparseToSparse nonSparseToSparse = new NonSparseToSparse();
 		try {
-			nonSparseToSparse.setInputFormat(dataSet);
-			Instances sparseDataset = Filter.useFilter(dataSet, nonSparseToSparse);
 			ArffSaver saver = new ArffSaver();
-			saver.setInstances(sparseDataset);
+			saver.setRetrieval(Saver.INCREMENTAL);
+			saver.setStructure(structure);
 			saver.setFile(new File(exportFileName));
-			saver.writeBatch();
+			for (Instance ins: attributeCalculator)
+				saver.writeIncremental(ins);
+			saver.writeIncremental(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private Iterator<Instance> iterInstance = null;
+	public Instance getInstance(){
+		if (iterInstance == null)
+			iterInstance = attributeCalculator.iterator();
+		if (iterInstance.hasNext())
+			return iterInstance.next();
+		return null;
 	}
 	
 	@Override
@@ -89,5 +100,11 @@ public class FeatureExtractor extends AbstractLanguageAnalyser implements Contro
 	
 	public void setManual(boolean manual) {
 		this.manual = manual;
+	}
+	
+	public static void main(String[] args) {
+		SparseInstance a = new SparseInstance(4, new double[]{0, 1, 1, 0});
+		SparseInstance b = new SparseInstance(4, new double[]{1, 1, 0, 1});
+		System.out.println(a.mergeInstance(b));
 	}
 }
