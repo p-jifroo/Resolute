@@ -14,7 +14,7 @@ public class BooleanVectorEncoder implements WekaEncoder, Serializable{
 	
 	private long dfMin, dfMax;
 	private double dfMaxPercentage;
-	private Map<String, Integer> word2ID = new TreeMap<>();
+	private Map<String, Integer> word2ID = new TreeMap();
 	private FastVector booleanValue;
 
 	public BooleanVectorEncoder(int dfMin, double dfMaxPercentage) {
