@@ -25,7 +25,7 @@ import ca.concordia.resolute.core.chat.FacebookConversation;
 import ca.concordia.resolute.core.chat.Message;
 import ca.concordia.resolute.core.chat.listener.ConsoleMessage;
 import ca.concordia.resolute.core.chat.listener.ResoluteNLPAnalyzer;
-import ca.concordia.resolute.core.textmining.gate.RuleBaseAgeDetectorApp;
+import ca.concordia.resolute.core.textmining.gate.ResouluteApp;
 
 public class FacebookAPITest {
 
@@ -152,7 +152,7 @@ public class FacebookAPITest {
 		Gate.init();
 		ConversationAPI facebookConversation = new ConversationModel();
 		
-		SerialAnalyserController controller = new RuleBaseAgeDetectorApp().getController();
+		SerialAnalyserController controller = new ResouluteApp().getController();
 		facebookConversation.addListener(new ResoluteNLPAnalyzer(controller));
 		facebookConversation.addListener(new ConsoleMessage());
 
@@ -178,7 +178,7 @@ public class FacebookAPITest {
 
 		FacebookConversation facebookConversation = new FacebookConversation(new ConversationModel());
 		
-		SerialAnalyserController controller = new RuleBaseAgeDetectorApp().getController();
+		SerialAnalyserController controller = new ResouluteApp().getController();
 		facebookConversation.addListener(new ResoluteNLPAnalyzer(controller));
 		facebookConversation.addListener(new ConsoleMessage());
 

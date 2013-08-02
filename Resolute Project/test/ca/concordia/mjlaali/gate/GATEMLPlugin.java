@@ -1,5 +1,6 @@
 package ca.concordia.mjlaali.gate;
 
+import gate.AnnotationSet;
 import gate.Corpus;
 import gate.Document;
 import gate.Factory;
@@ -7,52 +8,65 @@ import gate.Gate;
 import gate.creole.ANNIEConstants;
 import gate.creole.ResourceInstantiationException;
 import gate.creole.SerialAnalyserController;
-import gate.persist.PersistenceException;
 import gate.util.GateException;
 import gate.util.persistence.PersistenceManager;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Map;
+import java.util.TreeMap;
 
+import org.apache.lucene.analysis.WhitespaceAnalyzer;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.util.Version;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.util.Assert;
 
+import weka.classifiers.Classifier;
+import weka.classifiers.trees.J48;
+import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
+import ca.concordia.mjlaali.gate.ml.BooleanVectorEncoder;
 import ca.concordia.mjlaali.gate.ml.DocumentInstance;
-import ca.concordia.mjlaali.gate.ml.FeatureExtractor;
-import ca.concordia.mjlaali.gate.ml.attributeCalculator.FeatureValue;
-import ca.concordia.mjlaali.gate.ml.wekaExporter.DefaultWekaExporter;
-import ca.concordia.mjlaali.gate.ml.wekaExporter.MemoryWordIndexer;
-import ca.concordia.mjlaali.gate.ml.wekaExporter.NumeratorRepresenter;
-import ca.concordia.mjlaali.gate.ml.wekaExporter.TFIDFModel;
-import ca.concordia.mjlaali.gate.ml.wekaExporter.VectorNumbersRepresenter;
+import ca.concordia.mjlaali.gate.ml.FeatureExtractorPR;
+import ca.concordia.mjlaali.gate.ml.FeatureValue;
+import ca.concordia.mjlaali.gate.ml.LuceneToWeka;
+import ca.concordia.mjlaali.gate.ml.NumaratorEncoder;
+import ca.concordia.mjlaali.gate.ml.WekaEncoder;
 import ca.concordia.resolute.core.chat.listener.XMLSaver;
 import ca.concordia.resolute.datamining.PANConverter;
-import ca.concordia.resolute.datamining.PANDataSet;
 import ca.concorida.resolute.core.textmining.RuleBaseAgeDetectionTest;
 
 public class GATEMLPlugin {
-	private static Corpus persistanceCorpus;
-	public static final String DEFUALT_OUTFILE = "output/";
+	private static final String ATTNAME_WORDS = "WORDS#";
+	private static final String ATTNAME_CLASS = "{{CLASS}}";
+	private static final String ARFF_FILE = "output/test.arff";
+	private static final String APP_FEATURE_EXTRACTOR = "output/test.xapp";
+	private static final String IDX_TRAIN = "output/idx_test";
 	public static final String ORIGINAL_MARKUPS = "Original markups";
 
 	public static final String PAN_DATASTORE_LOC = 
 			"/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PAN 2012/pan12-sexual-predator-identification-training-data-2012-05-01/sds";
 
+	private static Corpus persistanceCorpus;
+	private static Corpus trainCorpus, testCorpus;
+	
 	@BeforeClass
 	public static void init() throws GateException, MalformedURLException{
 		Gate.init();
-		Gate.getCreoleRegister().registerComponent(FeatureExtractor.class);
+		Gate.getCreoleRegister().registerComponent(FeatureExtractorPR.class);
 		persistanceCorpus = RuleBaseAgeDetectionTest.readPresistanceCorpus(new File(PAN_DATASTORE_LOC));
-		testCorpus = copyFromCorpus(0, 100, persistanceCorpus);
+		
+		trainCorpus = copyFromCorpus(0, 1000, persistanceCorpus);
+		testCorpus = copyFromCorpus(1000, 100, persistanceCorpus);
 	}
-
-	private static Corpus testCorpus;
 
 	public static Corpus copyFromCorpus(int start, int cnt, Corpus corpus) throws ResourceInstantiationException{
 		Corpus testCorpus = Factory.newCorpus("test corpus");
@@ -81,95 +95,132 @@ public class GATEMLPlugin {
 		Factory.deleteResource(corpus);
 	}
 
-	//	@Ignore
 	@Test
-	public void extractFeatures() throws Exception{
-		Document doc = Factory.newDocument("it is a test.");
-		Document doc2 = Factory.newDocument("it is another test.");
-
-		String outfile = DEFUALT_OUTFILE + "simple.arff";
-		FeatureExtractor featureExtrator = (FeatureExtractor)Factory.createResource(FeatureExtractor.class.getName());
-		FeatureValue attributeCalculator = new FeatureValue(null, ANNIEConstants.TOKEN_ANNOTATION_TYPE, ANNIEConstants.TOKEN_STRING_FEATURE_NAME);
-		attributeCalculator.setWekaExporter(new DefaultWekaExporter(new VectorNumbersRepresenter(), new MemoryWordIndexer()));
-		featureExtrator.setAttributeCalculator(attributeCalculator);
-		featureExtrator.setInstanceExtractor(new DocumentInstance());
-		featureExtrator.setExportFileName(outfile);
-
-		SerialAnalyserController app = createFeatureExtractor(featureExtrator);
-
-		Corpus corpus = Factory.newCorpus("corpus");
-		corpus.add(doc);
-		corpus.add(doc2);
-
-		app.setCorpus(corpus);
-		app.execute();
-
-		DataSource source = new DataSource(outfile);
-		Assert.notNull(source.getDataSet());
+	public void train() throws Exception{
+		//define attribute
+		File path = new File(IDX_TRAIN);
+		Directory dir = FSDirectory.open(path);
+		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_35, new WhitespaceAnalyzer(Version.LUCENE_35));
+		iwc.setOpenMode(OpenMode.CREATE);
+		IndexWriter indexer = new IndexWriter(dir, iwc);
+		
+		FeatureExtractorPR featureExtractor = createFeatureExtractor();
+		
+		featureExtractor.setIndexer(indexer);
+		
+		//calculate value
+		SerialAnalyserController controller = (SerialAnalyserController) Factory.createResource(SerialAnalyserController.class.getName());
+		controller.add(featureExtractor);
+		File appFile = new File (APP_FEATURE_EXTRACTOR);
+		PersistenceManager.saveObjectToFile(controller, appFile);
+		
+		Corpus corpus = trainCorpus;
+		controller.setCorpus(corpus);
+		controller.execute();
+		
+		//save to file
+		indexer.close();
+		Map<String, WekaEncoder> name2Encoder = new TreeMap<String, WekaEncoder>();
+		name2Encoder.put(ATTNAME_CLASS, new NumaratorEncoder());
+		name2Encoder.put(ATTNAME_WORDS, new BooleanVectorEncoder(2, 0.5));
+		LuceneToWeka luceneToWeka = new LuceneToWeka(dir, name2Encoder);
+		luceneToWeka.buildStructure(dir, "simple train");
+		File arffFile = new File(ARFF_FILE);
+		luceneToWeka.saveAsArff(arffFile);
+		
+		DataSource source = new DataSource(ARFF_FILE);
+		source.getDataSet();
 	}
 
-	private SerialAnalyserController createFeatureExtractor(FeatureExtractor featureExtrator)
-			throws PersistenceException, IOException,
-			ResourceInstantiationException {
+	private FeatureExtractorPR createFeatureExtractor()
+			throws ResourceInstantiationException {
+		FeatureExtractorPR featureExtractor = (FeatureExtractorPR) Factory.createResource(FeatureExtractorPR.class.getName());
+		featureExtractor.setInstanceExtractor(new DocumentInstance());
+		featureExtractor.addAttributeCalculator(
+				new FeatureValue(ATTNAME_WORDS, null, ANNIEConstants.TOKEN_ANNOTATION_TYPE, ANNIEConstants.TOKEN_STRING_FEATURE_NAME));
+		featureExtractor.addAttributeCalculator(
+				new FeatureValue(ATTNAME_CLASS, GATEMLPlugin.ORIGINAL_MARKUPS, 
+						XMLSaver.CONVERSATION_TAG, PANConverter.CONVERSATION_TYPE));
+		return featureExtractor;
+	}
+
+	@Test
+	public void test() throws Exception{
+		//learn classifier
+		DataSource source = new DataSource(ARFF_FILE);
+		Instances dataSet = source.getDataSet();
+		dataSet.setClassIndex(dataSet.numAttributes() - 1);
+		
+		String[] options = weka.core.Utils.splitOptions("-C 0.25 -M 2");
+		Classifier xModel = new J48();
+		xModel.setOptions(options);
+		xModel.buildClassifier(dataSet);
+		
+		//load feature extraction application
+//		SerialAnalyserController appFeaExt = (SerialAnalyserController) 
+//				PersistenceManager.loadObjectFromFile(new File(APP_FEATURE_EXTRACTOR));
+
 		SerialAnalyserController app = (SerialAnalyserController) 
 				PersistenceManager.loadObjectFromFile(new File(new File( 
 						Gate.getPluginsHome(), ANNIEConstants.PLUGIN_DIR), 
 						ANNIEConstants.DEFAULT_FILE));
-		app.add(featureExtrator);
-		return app;
-	}
 
-	@Test
-	public void compositFeature() throws Exception{
-
-		String outfile = DEFUALT_OUTFILE + "composit.arff";
-		FeatureExtractor featureExtrator = (FeatureExtractor)Factory.createResource(FeatureExtractor.class.getName());
-		FeatureValue attributeCalculator = null;
-		attributeCalculator = new FeatureValue(ORIGINAL_MARKUPS, XMLSaver.CONVERSATION_TAG, PANConverter.CONVERSATION_TYPE, attributeCalculator);
-		attributeCalculator.setWekaExporter(new DefaultWekaExporter(new NumeratorRepresenter("@@Class@@"), new MemoryWordIndexer()));
-		attributeCalculator = new FeatureValue(null, ANNIEConstants.TOKEN_ANNOTATION_TYPE, ANNIEConstants.TOKEN_STRING_FEATURE_NAME, attributeCalculator);
-		attributeCalculator.setWekaExporter(new DefaultWekaExporter(new VectorNumbersRepresenter(), new TFIDFModel("output/tfidf", 0, 10, 0.3)));
-
-		featureExtrator.setAttributeCalculator(attributeCalculator);
-		featureExtrator.setInstanceExtractor(new DocumentInstance());
-		featureExtrator.setExportFileName(outfile);
-
-		SerialAnalyserController app = createFeatureExtractor(featureExtrator);
-		app.setCorpus(testCorpus);
-		app.execute();
-
-		DataSource source = new DataSource(outfile);
-		Assert.notNull(source.getDataSet());
+		FeatureExtractorPR featureExtractor = createFeatureExtractor();
+//		@SuppressWarnings("unchecked")
+//		Collection<ProcessingResource> pRs = appFeaExt.getPRs();
+//		FeatureExtractorPR featureExtractor = null;
+//		for (ProcessingResource pr: pRs){
+//			if (pr instanceof FeatureExtractorPR) {
+//				featureExtractor = (FeatureExtractorPR) pr;
+//			}
+//		}
 		
+		Corpus testCorpus = GATEMLPlugin.testCorpus;
+//		app.add(appFeaExt);
+		app.add(featureExtractor);
+		app.setCorpus(testCorpus);
+		Directory dir = new RAMDirectory();
+
+		Directory dirTrain = FSDirectory.open(new File(IDX_TRAIN));
+		Map<String, WekaEncoder> name2Encoder = new TreeMap<String, WekaEncoder>();
+		name2Encoder.put(ATTNAME_WORDS, new BooleanVectorEncoder(2, 0.5));
+
+		for (Document doc: testCorpus){
+			IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_35, new WhitespaceAnalyzer(Version.LUCENE_35));
+			iwc.setOpenMode(OpenMode.CREATE);
+			IndexWriter iw = new IndexWriter(dir, iwc);
+			featureExtractor.setIndexer(iw);
+
+			app.setDocument(doc);
+			app.execute();
+			
+			iw.close();
+			LuceneToWeka luceneToWeka = new LuceneToWeka(dir, name2Encoder);
+			Instances data = luceneToWeka.buildStructure(dirTrain, "test");
+			for (int i = 0; i < luceneToWeka.getNumDoc(); ++i)
+				data.add(luceneToWeka.getInstance(i));
+			data.setClassIndex(data.numAttributes() - 1);
+			
+			for (int i = 0; i < data.numInstances(); ++i) {
+				Instance instance = data.instance(i);
+				double cls = xModel.classifyInstance(instance);
+				if (cls > 0){
+					AnnotationSet annotationSet = doc.getAnnotations(ORIGINAL_MARKUPS).get(XMLSaver.CONVERSATION_TAG);
+					String conversationType = annotationSet.iterator().next().getFeatures().get(PANConverter.CONVERSATION_TYPE).toString();
+					System.out.println(conversationType);
+					if (conversationType.equals("PREDATOR"))
+						System.out.println(doc.getFeatures());
+					double[] probs = xModel.distributionForInstance(instance);
+					for (double prob: probs)
+						System.out.println(prob);
+				}
+			}
+		}
 	}
 	
-	@Ignore
-	@Test
-	public void testFeature() throws Exception{
-		//init the app
-		FeatureExtractor featureExtrator = (FeatureExtractor)Factory.createResource(FeatureExtractor.class.getName());
-		FeatureValue attributeCalculator = null;
-		attributeCalculator = new FeatureValue(ORIGINAL_MARKUPS, XMLSaver.CONVERSATION_TAG, PANConverter.CONVERSATION_TYPE, attributeCalculator);
-		attributeCalculator.setWekaExporter(new DefaultWekaExporter(new NumeratorRepresenter("@@Class@@"), new MemoryWordIndexer()));
-		attributeCalculator = new FeatureValue(null, ANNIEConstants.TOKEN_ANNOTATION_TYPE, ANNIEConstants.TOKEN_STRING_FEATURE_NAME, attributeCalculator);
-		attributeCalculator.setWekaExporter(new DefaultWekaExporter(new VectorNumbersRepresenter(), new TFIDFModel("output/tfidf", 0, 10, 0.3)));
-		featureExtrator.setAttributeCalculator(attributeCalculator);
-		featureExtrator.setInstanceExtractor(new DocumentInstance());
-
-//		SerialAnalyserController app = createFeatureExtractor(featureExtrator);
-
-		//init classifier
-		DataSource source = new DataSource(PANDataSet.COMPLETE_ATTR);
-		Instances trainData = source.getDataSet();
-		trainData.setClassIndex(trainData.numAttributes() - 1);
-		
-//		Classifier cModel = new SMO();
-//		cModel.setOptions(options);
-
-		
-		//init test corpus
-		
-		//check the corpus output
+	public static void main(String[] args) throws Exception {
+		GATEMLPlugin gatemlPlugin = new GATEMLPlugin();
+		GATEMLPlugin.init();
+		gatemlPlugin.test();
 	}
-
 }

@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ca.concordia.mjlaali.gate.ml.FeatureExtractorPR;
 import ca.concordia.resolute.datamining.PANConverter;
 
 /**
@@ -40,11 +41,12 @@ public class GATEApi {
 	@BeforeClass
 	public static void init() throws GateException, IOException{
 		Gate.init();
+		Gate.getCreoleRegister().registerComponent(FeatureExtractorPR.class);
 		controller = (SerialAnalyserController) 
 				PersistenceManager.loadObjectFromFile(new File(new File( 
 						Gate.getPluginsHome(), ANNIEConstants.PLUGIN_DIR), 
 						ANNIEConstants.DEFAULT_FILE));
-
+		
 	}
 
 	/**
@@ -96,5 +98,20 @@ public class GATEApi {
 		
 		Factory.deleteResource(doc);
 	}
+	
+	@Test
+	public void persistApp() throws ResourceInstantiationException, PersistenceException, IOException{
+		SerialAnalyserController controller = (SerialAnalyserController) Factory.createResource(SerialAnalyserController.class.getName());
+		FeatureExtractorPR featureExtractor = (FeatureExtractorPR) Factory.createResource(FeatureExtractorPR.class.getName());
+		controller.add(featureExtractor);
+		
+		File file = new File("output/testapp.xapp");
+		PersistenceManager.saveObjectToFile(controller, file);
+		Factory.deleteResource(controller);
+		Factory.deleteResource(featureExtractor);
+		
+		controller = (SerialAnalyserController) PersistenceManager.loadObjectFromFile(file);
+	}
+	
 
 }

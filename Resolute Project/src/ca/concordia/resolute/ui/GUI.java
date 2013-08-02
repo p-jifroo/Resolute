@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -35,8 +36,10 @@ import ca.concordia.resolute.core.chat.FacebookConversation;
 import ca.concordia.resolute.core.chat.Message;
 import ca.concordia.resolute.core.chat.listener.ResoluteNLPAnalyzer;
 import ca.concordia.resolute.core.chat.listener.XMLSaver;
+import ca.concordia.resolute.core.textmining.gate.PredatorDetector;
+import ca.concordia.resolute.core.textmining.gate.ResouluteApp;
 import ca.concordia.resolute.core.textmining.gate.RuleBaseAgeDetection;
-import ca.concordia.resolute.core.textmining.gate.RuleBaseAgeDetectorApp;
+import ca.concordia.resolute.tools.Simulator;
 
 public class GUI extends JFrame implements ChatMessageListener{
 
@@ -55,6 +58,13 @@ public class GUI extends JFrame implements ChatMessageListener{
 	private FacebookConversation facebookConversation = null;
 	private JTextField textFieldChatLog;
 	private JButton btnLogin;
+	private JTextField textFieldPredatorProbability;
+	private JLabel lblPredatorProb;
+	private JButton btnSimulate;
+	
+	private ConversationModel conversationModel;
+	private Simulator simulator;
+	
 
 	/**
 	 * Launch the application.
@@ -76,23 +86,32 @@ public class GUI extends JFrame implements ChatMessageListener{
 		if (facebookConversation == null){
 			List<RosterEntry> onlineFriends = soenpre.getOnlineFriends();
 			if (onlineFriends.size() > 0){
-				facebookConversation = new FacebookConversation(new ConversationModel());
+				facebookConversation = new FacebookConversation(conversationModel);
 				facebookConversation.setChat(soenpre, onlineFriends.get(0));
-				facebookConversation.addListener(new ResoluteNLPAnalyzer(controller));
-				facebookConversation.addListener(this);
-				facebookConversation.addListener(new XMLSaver("output/chat.xml"));
 			}
 		}
 		return facebookConversation;
+	}
+	
+	private void initConversation() throws ResourceInstantiationException, IOException, XMLStreamException, FactoryConfigurationError{
+		conversationModel = new ConversationModel();
+		conversationModel.addListener(new ResoluteNLPAnalyzer(controller));
+		conversationModel.addListener(this);
+		conversationModel.addListener(new XMLSaver("output/chat.xml"));
+
 	}
 	/**
 	 * Create the frame.
 	 * @throws GateException 
 	 * @throws IOException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
 	 */
-	public GUI() throws GateException, IOException {
+	public GUI() throws GateException, IOException, XMLStreamException, FactoryConfigurationError {
 		Gate.init();
-		controller = new RuleBaseAgeDetectorApp().getController();
+		controller = new ResouluteApp().getController();
+		initConversation();
+		simulator = new Simulator(conversationModel, 2000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 618, 506);
 		contentPane = new JPanel();
@@ -135,6 +154,18 @@ public class GUI extends JFrame implements ChatMessageListener{
 		});
 		panleLogin.add(btnLogin);
 		
+		btnSimulate = new JButton("Simulate");
+		btnSimulate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String fld = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PAN 2012/pan12-sexual-predator-identification-training-data-2012-05-01/sampleXML/";
+				String file = "0000604306a283600b730276a2039471.xml";
+				String predatorFile = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PAN%202012/pan12-sexual-predator-identification-training-data-2012-05-01/xml/cf6cafbf41d2bd9b32ca79f8d7a0c2d2.xml";
+				String j48file = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PAN%202012/pan12-sexual-predator-identification-training-data-2012-05-01/xml/cd5fb308f9ffb74ebaf0142ea9c8266e.xml";
+				simulator.simulate(j48file);
+			}
+		});
+		panleLogin.add(btnSimulate);
+		
 		JPanel panelChat = new JPanel();
 		contentPane.add(panelChat, BorderLayout.CENTER);
 		panelChat.setLayout(new BorderLayout(0, 0));
@@ -166,7 +197,8 @@ public class GUI extends JFrame implements ChatMessageListener{
 		textAreaChatLogs = new JTextArea();
 		textAreaChatLogs.setEnabled(false);
 		textAreaChatLogs.setEditable(false);
-		panelChat.add(textAreaChatLogs, BorderLayout.CENTER);
+		JScrollPane sp = new JScrollPane(textAreaChatLogs);
+		panelChat.add(sp, BorderLayout.CENTER);
 		
 		JPanel panelInformation = new JPanel();
 		contentPane.add(panelInformation, BorderLayout.SOUTH);
@@ -179,6 +211,15 @@ public class GUI extends JFrame implements ChatMessageListener{
 		textFieldAge.setEditable(false);
 		panelInformation.add(textFieldAge);
 		textFieldAge.setColumns(10);
+		
+		lblPredatorProb = new JLabel("Predator Probability:");
+		panelInformation.add(lblPredatorProb);
+		
+		textFieldPredatorProbability = new JTextField();
+		textFieldPredatorProbability.setEnabled(false);
+		textFieldPredatorProbability.setEditable(false);
+		panelInformation.add(textFieldPredatorProbability);
+		textFieldPredatorProbability.setColumns(10);
 	}
 
 	@Override
@@ -187,6 +228,7 @@ public class GUI extends JFrame implements ChatMessageListener{
 		Object age = conversation.getDoc().getFeatures().get(RuleBaseAgeDetection.AGE_DOC_FEATURE);
 		if (age != null && !age.toString().equals("-1"))
 			textFieldAge.setText(age.toString());
+		textFieldPredatorProbability.setText(conversation.getDoc().getFeatures().get(PredatorDetector.PREDATOR_PROB_DOC_FEATURE).toString());
 	}
 
 	@Override

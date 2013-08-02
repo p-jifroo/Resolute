@@ -7,6 +7,8 @@ import gate.util.InvalidOffsetException;
 
 public class DocumentInstance implements InstanceExtractor{
 	
+	private static final long serialVersionUID = 1L;
+	
 	private static final String DOCUMENT_INSTANCE = "DocumentInstance";
 
 	@Override

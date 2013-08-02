@@ -33,6 +33,7 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private int contexWindowSize = 10;
 
 	@Override
 	public void execute() throws ExecutionException {
@@ -52,16 +53,16 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 					idxToken = i;
 			}
 
-			int stWindows = idxToken - 5;
+			int stWindows = idxToken - contexWindowSize;
 			stWindows = stWindows < 0 ? 0 : stWindows;
-			int enWindows = idxToken + 5;
+			int enWindows = idxToken + contexWindowSize;
 			enWindows = enWindows > tokens.size() ? tokens.size() : enWindows;
 			
 			for (int i = stWindows; i < enWindows; ++i){
 				contextWord.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
 			}
-			if (contextWord.contains("m") || contextWord.contains("asl") 
-					|| contextWord.contains("f") || contextWord.contains("im") ){
+			if (contextWord.contains("asl") && (contextWord.contains("m")  
+					|| contextWord.contains("f"))){
 				Object oldAge = docFeatuers.get(AGE_DOC_FEATURE);
 				String newAge = Utils.stringFor(getDocument(), ann);
 				String age = oldAge == null ? newAge : oldAge + ", " + newAge;
@@ -80,7 +81,7 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 		String testFile = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PervertedJustice/xml/batch 2/ekoplaya20.xml";
 		
 		Gate.init();
-		RuleBaseAgeDetectorApp app = new RuleBaseAgeDetectorApp();
+		ResouluteApp app = new ResouluteApp();
 		Document doc = Factory.newDocument(new File(testFile).toURI().toURL());
 		
 		Document annotateAge = app.annotateAge(doc);

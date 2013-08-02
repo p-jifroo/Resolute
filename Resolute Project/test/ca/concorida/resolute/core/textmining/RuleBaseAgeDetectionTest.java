@@ -29,7 +29,7 @@ import org.junit.Test;
 
 import ca.concordia.resolute.core.evaluation.AnnotationEvaluation;
 import ca.concordia.resolute.core.textmining.gate.AgeCandidDetector;
-import ca.concordia.resolute.core.textmining.gate.RuleBaseAgeDetectorApp;
+import ca.concordia.resolute.core.textmining.gate.ResouluteApp;
 
 public class RuleBaseAgeDetectionTest {
 	private static Corpus persistCorp = null;
@@ -64,7 +64,7 @@ public class RuleBaseAgeDetectionTest {
 	@Test
 	public void precision() throws GateException, IOException{
 		AnnotationEvaluation evaluator = new AnnotationEvaluation();
-		RuleBaseAgeDetectorApp app = new RuleBaseAgeDetectorApp();
+		ResouluteApp app = new ResouluteApp();
 		FeatureMap featureMap = Factory.newFeatureMap();
 		featureMap.put("Class", "true");
 		int totalCorrect = 0, totalGold = 0, totalOutput = 0;
