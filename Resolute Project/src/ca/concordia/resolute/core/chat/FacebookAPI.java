@@ -35,8 +35,8 @@ public class FacebookAPI {
 	private XMPPConnection connection;
 
 	/**
-	 * Connect 
-	 * @return
+	 * Connect to the Facebook website
+	 * @return the connection ID
 	 * @throws XMPPException
 	 */
 	public String connect() throws XMPPException {
@@ -54,6 +54,9 @@ public class FacebookAPI {
 		return connection;
 	}
 
+	/**
+	 * disconnect from Facebook
+	 */
 	public void disconnect() {
 		if ((connection != null) && (connection.isConnected())) {
 			Presence presence = new Presence(Presence.Type.unavailable);
@@ -62,6 +65,13 @@ public class FacebookAPI {
 		}
 	}
 
+	/**
+	 * Login to the Facebook with specific user name and password
+	 * @param username the Facebook account user name
+	 * @param password the Facebook account password
+	 * @return true if it is login successfully, false otherwise
+	 * @throws XMPPException
+	 */
 	public boolean login(String username, String password) 
 			throws XMPPException {
 		if ((connection != null) && (connection.isConnected())) {
@@ -71,6 +81,9 @@ public class FacebookAPI {
 		return false;
 	}
 
+	/**
+	 * @return list of all the friends of the user that are online.
+	 */
 	public List<RosterEntry> getOnlineFriends() {
 		List<RosterEntry> onlineFriends = new LinkedList<>();
 		if ((connection != null) && (connection.isConnected())) {
@@ -86,6 +99,13 @@ public class FacebookAPI {
 		return onlineFriends;
 	}
 
+	/**
+	 * Create a chat conversation with specific friend of the user.
+	 * @param friend The friend of person to create a chat conversation.
+	 * @param listener a listener that receive all messages from the friend
+	 * @return Chat conversation
+	 * @throws XMPPException
+	 */
 	public Chat createChat(final RosterEntry friend, MessageListener listener) 
 			throws XMPPException {
 		if ((connection != null) && (connection.isConnected())) {

@@ -17,7 +17,7 @@ import java.io.IOException;
 
 
 /**
- * A GATE application that handles age extraction from the chat message.
+ * A GATE application that handles text analysises for a chat message.
  * @author mjlaali
  *
  */
@@ -42,6 +42,7 @@ public class ResouluteApp {
 		corpus = Factory.newCorpus("Corpus");
 	}
 	
+	
 	public Document annotateAge(Document aDoc) throws ResourceInstantiationException, ExecutionException{
 		Document annotatedDoc = (Document) Factory.duplicate(aDoc);
 
@@ -53,6 +54,9 @@ public class ResouluteApp {
 		return annotatedDoc;
 	}
 	
+	/**
+	 * @return GATE pipeline that contains all the necessary tools for analyzing a chat conversation
+	 */
 	public SerialAnalyserController getController() {
 		return controller;
 	}

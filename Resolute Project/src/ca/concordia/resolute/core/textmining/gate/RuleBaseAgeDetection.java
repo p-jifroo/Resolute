@@ -64,7 +64,7 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 			for (int i = idxToken; i < enWindows; ++i){
 				futureContex.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
 			}
-			
+			//some rules for age detection
 			if ((prevContext.contains("asl") ||  
 					(futureContex.get(0).equals("m") || futureContex.get(0).equals("f"))) ||
 					(prevContext.getLast().equals("i'm"))

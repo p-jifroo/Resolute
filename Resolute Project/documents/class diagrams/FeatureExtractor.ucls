@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="ca.concordia.mjlaali.gate.ml.FeatureValue" project="Resolute Project" 
     file="/Resolute Project/src/ca/concordia/mjlaali/gate/ml/FeatureValue.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1652" y="154"/>    
+    <position height="-1" width="-1" x="1283" y="154"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -22,7 +22,7 @@
   <interface id="3" language="java" name="ca.concordia.mjlaali.gate.ml.AttributeCalculator" project="Resolute Project" 
     file="/Resolute Project/src/ca/concordia/mjlaali/gate/ml/AttributeCalculator.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="98" width="313" x="1445" y="337"/>    
+    <position height="-1" width="-1" x="1287" y="384"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -42,33 +42,33 @@
   <class id="5" language="java" name="ca.concordia.mjlaali.gate.ml.FeatureExtractorPR" project="Resolute Project" 
     file="/Resolute Project/src/ca/concordia/mjlaali/gate/ml/FeatureExtractorPR.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="206" width="283" x="1169" y="37"/>    
+    <position height="-1" width="-1" x="1094" y="585"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <realization id="6">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="4"/>  
-  </realization>  
-  <association id="7">    
+  <association id="6">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="8" name="attributes"/>      
-      <multiplicity id="9" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="10">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="11" name="instanceExtractor"/>      
-      <multiplicity id="12" minimum="0" maximum="1"/>    
+      <attribute id="7" name="instanceExtractor"/>      
+      <multiplicity id="8" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <association id="9">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="10" name="attributes"/>      
+      <multiplicity id="11" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="12">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
   <realization id="13">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="3"/>  
