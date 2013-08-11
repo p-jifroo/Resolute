@@ -24,7 +24,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ca.concordia.resolute.core.evaluation.AnnotationEvaluation;
@@ -60,7 +59,6 @@ public class RuleBaseAgeDetectionTest {
 	}
 
 	@SuppressWarnings("deprecation")
-	@Ignore
 	@Test
 	public void precision() throws GateException, IOException{
 		AnnotationEvaluation evaluator = new AnnotationEvaluation();

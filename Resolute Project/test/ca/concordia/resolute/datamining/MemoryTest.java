@@ -1,6 +1,5 @@
 package ca.concordia.resolute.datamining;
 
-import gate.Corpus;
 import gate.DataStore;
 import gate.Document;
 import gate.Factory;
@@ -36,21 +35,23 @@ public class MemoryTest {
 		corpFeatures.put(DataStore.DATASTORE_FEATURE_NAME, sds);
 		
 		//tell the factory to load the Serial Corpus with the specified ID from the specified  datastore
-		Corpus persistanceCorpus = (Corpus)Factory.createResource(SerialCorpusImpl.class.getName(), corpFeatures);
+		SerialCorpusImpl persistanceCorpus = (SerialCorpusImpl)Factory.createResource(SerialCorpusImpl.class.getName(), corpFeatures);
 
 		ConsolProgressBar progressBar = new ConsolProgressBar(persistanceCorpus.size(), 100);
 //		Corpus dummyCorpus = Factory.newCorpus("dummy");
 		for (int i = 0; i < persistanceCorpus.size(); ++i){
 			//load document
 			Document doc = persistanceCorpus.get(i);
-			Document copyDoc = (Document)Factory.duplicate(doc);
-			copyDoc.getAnnotations().addAll(doc.getAnnotations());
 			
+			persistanceCorpus.unloadDocument(doc, true);
+//			doc.setDataStore(null);
+//			Document copyDoc = (Document)Factory.duplicate(doc);
+//			copyDoc.getAnnotations().addAll(doc.getAnnotations());
 			
+			//processing a document. I removed this part in unit testing
 			
 			//unload document
-			Factory.deleteResource(copyDoc);
-			persistanceCorpus.unloadDocument(doc);
+			Factory.deleteResource(doc);
 			
 			progressBar.progress(1L);
 //			dummyCorpus.add(copyDoc);

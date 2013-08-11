@@ -15,10 +15,13 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.TermVector;
 import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.store.Directory;
 
 
 /**
- * This class extracts boolean vector feature from a document.
+ * This class extracts features from a document. All extracted features are stored in a {@link Directory}. For each 
+ * Instance (refer to {@link InstanceExtractor}), a {@link org.apache.lucene.document.Document} is created and all features
+ * are stored as a {@link Fieldable} in the document.
  * @author mjlaali
  *
  */
@@ -59,14 +62,24 @@ public class FeatureExtractorPR extends AbstractLanguageAnalyser{
 		return new Field(name, strWords.toString(), Field.Store.YES, Field.Index.ANALYZED, TermVector.YES);
 	}
 	
+	/**
+	 * @param indexer Indexer that is responsible to index features.
+	 */
 	public void setIndexer(IndexWriter indexer) {
 		this.indexer = indexer;
 	}
-	
+
+	/**
+	 * @param instanceExtractor Instance extractor for a document
+	 */
 	public void setInstanceExtractor(InstanceExtractor instanceExtractor) {
 		this.instanceExtractor = instanceExtractor;
 	}
 	
+	/**
+	 * Add an attribute calculator for document.
+	 * @param attributeCalculator
+	 */
 	public void addAttributeCalculator(AttributeCalculator attributeCalculator){
 		attributes.add(attributeCalculator);
 	}

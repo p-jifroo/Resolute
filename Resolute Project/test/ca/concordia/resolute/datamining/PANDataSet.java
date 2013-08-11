@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.lucene.analysis.WhitespaceAnalyzer;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
@@ -34,13 +35,13 @@ import weka.classifiers.meta.AttributeSelectedClassifier;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 import ca.concordia.mjlaali.gate.GATEMLPlugin;
-import ca.concordia.mjlaali.gate.ml.BooleanVectorEncoder;
 import ca.concordia.mjlaali.gate.ml.DocumentInstance;
 import ca.concordia.mjlaali.gate.ml.FeatureExtractorPR;
 import ca.concordia.mjlaali.gate.ml.FeatureValue;
-import ca.concordia.mjlaali.gate.ml.LuceneToWeka;
-import ca.concordia.mjlaali.gate.ml.NumaratorEncoder;
-import ca.concordia.mjlaali.gate.ml.WekaEncoder;
+import ca.concordia.mjlaali.gate.ml.ecoder.BooleanVectorEncoder;
+import ca.concordia.mjlaali.gate.ml.ecoder.LuceneToWeka;
+import ca.concordia.mjlaali.gate.ml.ecoder.NumaratorEncoder;
+import ca.concordia.mjlaali.gate.ml.ecoder.WekaEncoder;
 import ca.concordia.mjlaali.tool.ConsolProgressBar;
 import ca.concordia.mjlaali.tool.XMLParser;
 import ca.concordia.resolute.core.chat.listener.XMLSaver;
@@ -49,10 +50,10 @@ import ca.concorida.resolute.core.textmining.RuleBaseAgeDetectionTest;
 
 public class PANDataSet {
 	
-	public static final String IDX_TRAIN = "output/idxPANTrain";
+	public static final String IDX_TRAIN = "output/idxPANTrainComplete";
 	private static final String ATTNAME_WORDS = "WORDS#";
 	private static final String ATTNAME_CLASS = "{{CLASS}}";
-	private static final String ARFF_FILE = "output/pan_train.arff";
+	private static final String ARFF_FILE = "output/pan_trainComplete.arff";
 
 	private static final String PAN_DATASET_FLD = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PAN 2012/";
 	private static final String PAN_TRAIN_FLD = PAN_DATASET_FLD + "pan12-sexual-predator-identification-training-data-2012-05-01/";
@@ -93,12 +94,12 @@ public class PANDataSet {
 		return featureExtractor;
 	}
 
-	public void createTrainArff() throws Exception{
+	public void createTrainArff(int idxChunk, OpenMode openMode) throws Exception{
 		//define attribute
 		File path = new File(IDX_TRAIN);
 		Directory dir = FSDirectory.open(path);
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_35, new WhitespaceAnalyzer(Version.LUCENE_35));
-		iwc.setOpenMode(OpenMode.CREATE);
+		iwc.setOpenMode(openMode);
 		IndexWriter indexer = new IndexWriter(dir, iwc);
 		
 		FeatureExtractorPR featureExtractor = createFeatureExtractor();
@@ -110,9 +111,12 @@ public class PANDataSet {
 		controller.add(featureExtractor);
 		
 		int chunkSize = 100;
-		int totalDocument = persistanceCorpus.size();
-		ConsolProgressBar progressBar = new ConsolProgressBar(totalDocument, 100);
-		for (int i = 0; i < totalDocument; i += chunkSize){
+		int start = persistanceCorpus.size() * idxChunk / 5;
+		int end = persistanceCorpus.size() * (idxChunk + 1) / 5;
+		if (start < 0)
+			start = 0;
+		ConsolProgressBar progressBar = new ConsolProgressBar(end - start, 100);
+		for (int i = start; i < end; i += chunkSize){
 			Corpus testCorpus = GATEMLPlugin.copyFromCorpus(i, chunkSize, persistanceCorpus);
 
 			controller.setCorpus(testCorpus);
@@ -124,6 +128,11 @@ public class PANDataSet {
 		
 		//save to file
 		indexer.close();
+		
+	}
+
+	public void extractToArff(Directory dir) throws CorruptIndexException,
+			IOException {
 		Map<String, WekaEncoder> name2Encoder = new TreeMap<String, WekaEncoder>();
 		name2Encoder.put(ATTNAME_CLASS, new NumaratorEncoder());
 		name2Encoder.put(ATTNAME_WORDS, new BooleanVectorEncoder(2, 0.5));
@@ -131,9 +140,6 @@ public class PANDataSet {
 		luceneToWeka.buildStructure(dir, "simple train");
 		File arffFile = new File(ARFF_FILE);
 		luceneToWeka.saveAsArff(arffFile);
-		
-		DataSource source = new DataSource(ARFF_FILE);
-		source.getDataSet();
 	}
 	
 	public void learnClassifier() throws Exception{
@@ -207,9 +213,14 @@ public class PANDataSet {
 		System.out.println("PANDataSet.main()");
 		PANDataSet panDataSet = new PANDataSet();
 		panDataSet.initGate();
-//		panDataSet.createTrainArff();
+//		panDataSet.createTrainArff(0, OpenMode.CREATE);
+//		panDataSet.createTrainArff(1, OpenMode.CREATE_OR_APPEND);
+//		panDataSet.createTrainArff(2, OpenMode.CREATE_OR_APPEND);
+//		panDataSet.createTrainArff(3, OpenMode.CREATE_OR_APPEND);
+//		panDataSet.createTrainArff(4, OpenMode.CREATE_OR_APPEND);
+		panDataSet.extractToArff(FSDirectory.open(new File(IDX_TRAIN)));
 //		panDataSet.learnLogisticClassifier();
-		panDataSet.testClassifier();
+//		panDataSet.testClassifier();
 	}
 	
 }

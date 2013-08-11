@@ -157,9 +157,9 @@ public class GUI extends JFrame implements ChatMessageListener{
 		btnSimulate = new JButton("Simulate");
 		btnSimulate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String fld = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PAN 2012/pan12-sexual-predator-identification-training-data-2012-05-01/sampleXML/";
-				String file = "0000604306a283600b730276a2039471.xml";
-				String predatorFile = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PAN%202012/pan12-sexual-predator-identification-training-data-2012-05-01/xml/cf6cafbf41d2bd9b32ca79f8d7a0c2d2.xml";
+//				String fld = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PAN 2012/pan12-sexual-predator-identification-training-data-2012-05-01/sampleXML/";
+//				String file = "0000604306a283600b730276a2039471.xml";
+//				String predatorFile = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PAN%202012/pan12-sexual-predator-identification-training-data-2012-05-01/xml/cf6cafbf41d2bd9b32ca79f8d7a0c2d2.xml";
 				String j48file = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PAN%202012/pan12-sexual-predator-identification-training-data-2012-05-01/xml/cd5fb308f9ffb74ebaf0142ea9c8266e.xml";
 				simulator.simulate(j48file);
 			}

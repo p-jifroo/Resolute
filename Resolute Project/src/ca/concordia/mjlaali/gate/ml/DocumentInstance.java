@@ -5,6 +5,11 @@ import gate.Document;
 import gate.Factory;
 import gate.util.InvalidOffsetException;
 
+/**
+ * This class extract an instance which is equal to whole document.
+ * @author mjlaali
+ *
+ */
 public class DocumentInstance implements InstanceExtractor{
 	
 	private static final long serialVersionUID = 1L;

@@ -16,7 +16,16 @@ import org.jivesoftware.smack.packet.Presence;
 
 import com.fb.xmppchat.helper.MySASLDigestMD5Mechanism;
 
-
+/**
+ * This class implement Facebook API for chat conversation. For creating a chat conversation these steps should be done:
+ * 1- {@link #connect()}
+ * 2- {@link #login(String, String)} with username and password
+ * 3- {@link #getOnlineFriends()} get list of online friends of this logined account
+ * 4- {@link #createChat(RosterEntry, MessageListener)} create a chat conversation with specific user. 
+ * 5- {@link #disconnect()} disconnect from chat conversation.
+ * @author mjlaali
+ *
+ */
 public class FacebookAPI {
 
 	public static final String FB_XMPP_HOST = "chat.facebook.com";
@@ -25,6 +34,11 @@ public class FacebookAPI {
 	private ConnectionConfiguration config;
 	private XMPPConnection connection;
 
+	/**
+	 * Connect 
+	 * @return
+	 * @throws XMPPException
+	 */
 	public String connect() throws XMPPException {
 		config = new ConnectionConfiguration(FB_XMPP_HOST, FB_XMPP_PORT);
 		SASLAuthentication.registerSASLMechanism("DIGEST-MD5"

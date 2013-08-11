@@ -15,9 +15,8 @@ import gate.util.GateException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 
 /**
@@ -33,7 +32,8 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int contexWindowSize = 10;
+	private int prevContexWindowSize = 10;
+	private int futureContexWindowSize = 5;
 
 	@Override
 	public void execute() throws ExecutionException {
@@ -43,9 +43,9 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 		List<Annotation> tokens = Utils.inDocumentOrder(docAnnSet.get(ANNIEConstants.TOKEN_ANNOTATION_TYPE));
 		
 		FeatureMap docFeatuers = getDocument().getFeatures();
-		Set<String> contextWord = new TreeSet<>();
+		LinkedList<String> prevContext = new LinkedList<>(), futureContex = new LinkedList<>();
 		for (Annotation ann: ageCandid){
-			contextWord.clear();
+			prevContext.clear();
 			
 			int idxToken = -1;
 			for (int i = 0; i < tokens.size(); ++i){
@@ -53,16 +53,22 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 					idxToken = i;
 			}
 
-			int stWindows = idxToken - contexWindowSize;
+			int stWindows = idxToken - prevContexWindowSize;
 			stWindows = stWindows < 0 ? 0 : stWindows;
-			int enWindows = idxToken + contexWindowSize;
+			int enWindows = idxToken + futureContexWindowSize;
 			enWindows = enWindows > tokens.size() ? tokens.size() : enWindows;
 			
-			for (int i = stWindows; i < enWindows; ++i){
-				contextWord.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
+			for (int i = stWindows; i < idxToken; ++i){
+				prevContext.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
 			}
-			if (contextWord.contains("asl") && (contextWord.contains("m")  
-					|| contextWord.contains("f"))){
+			for (int i = idxToken; i < enWindows; ++i){
+				futureContex.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
+			}
+			
+			if ((prevContext.contains("asl") ||  
+					(futureContex.get(0).equals("m") || futureContex.get(0).equals("f"))) ||
+					(prevContext.getLast().equals("i'm"))
+					){
 				Object oldAge = docFeatuers.get(AGE_DOC_FEATURE);
 				String newAge = Utils.stringFor(getDocument(), ann);
 				String age = oldAge == null ? newAge : oldAge + ", " + newAge;

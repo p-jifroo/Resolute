@@ -1,9 +1,16 @@
-package ca.concordia.mjlaali.gate.ml;
+package ca.concordia.mjlaali.gate.ml.ecoder;
 
-
+import ca.concordia.mjlaali.gate.ml.AttributeCalculator;
 import weka.core.Attribute;
 import weka.core.FastVector;
 
+/**
+ * Encode the input feature value as a numerator. Therefore, the output of {@link AttributeCalculator}, which is a Set
+ * String, is represented as numerator. This type of encoding is useful for attribute such as class which there all 
+ * multiple value for it and only one of them is represented in the attribute
+ * @author mjlaali
+ *
+ */
 public class NumaratorEncoder implements WekaEncoder{
 	private FastVector numaratorValues = new FastVector();
 	
