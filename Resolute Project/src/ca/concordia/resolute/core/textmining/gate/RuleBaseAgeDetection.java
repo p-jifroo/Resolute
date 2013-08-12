@@ -46,43 +46,89 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 		LinkedList<String> prevContext = new LinkedList<>(), futureContex = new LinkedList<>();
 		for (Annotation ann: ageCandid){
 			prevContext.clear();
+			futureContex.clear();
 			
-			int idxToken = -1;
-			for (int i = 0; i < tokens.size(); ++i){
-				if (tokens.get(i).getStartNode().getOffset() == ann.getStartNode().getOffset())
-					idxToken = i;
-			}
+			int idxToken = findPosition(tokens, ann);
 
-			int stWindows = idxToken - prevContexWindowSize;
-			stWindows = stWindows < 0 ? 0 : stWindows;
-			int enWindows = idxToken + futureContexWindowSize;
-			enWindows = enWindows > tokens.size() ? tokens.size() : enWindows;
+			createContextWindows(tokens, prevContext, futureContex, idxToken);
 			
-			for (int i = stWindows; i < idxToken; ++i){
-				prevContext.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
-			}
-			for (int i = idxToken; i < enWindows; ++i){
-				futureContex.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
-			}
-			//some rules for age detection
-			if ((prevContext.contains("asl") ||  
-					(futureContex.get(0).equals("m") || futureContex.get(0).equals("f"))) ||
-					(prevContext.getLast().equals("i'm"))
-					){
-				Object oldAge = docFeatuers.get(AGE_DOC_FEATURE);
-				String newAge = Utils.stringFor(getDocument(), ann);
-				String age = oldAge == null ? newAge : oldAge + ", " + newAge;
-				docFeatuers.put(AGE_DOC_FEATURE, age);
-				ann.getFeatures().put("Class", "true");
-			}
+			applyRules(docFeatuers, prevContext, futureContex, ann);
 		}
 		
 		if (docFeatuers.get(AGE_DOC_FEATURE) == null){
 			docFeatuers.put(AGE_DOC_FEATURE, "?");
 		}
 	}
+
+	/**
+	 * Find position of a token in the input annotations list.
+	 * @param tokens list of all annotations
+	 * @param ann the annotation to lookup
+	 * @return the position of annotation
+	 */
+	private int findPosition(List<Annotation> tokens, Annotation ann) {
+		int idxToken = -1;
+		for (int i = 0; i < tokens.size(); ++i){
+			if (tokens.get(i).getStartNode().getOffset() == ann.getStartNode().getOffset())
+				idxToken = i;
+		}
+		return idxToken;
+	}
+
+
+	/**
+	 * extract context words from document
+	 * @param tokens
+	 * @param prevContext
+	 * @param futureContex
+	 * @param idxToken
+	 */
+	private void createContextWindows(List<Annotation> tokens,
+			LinkedList<String> prevContext, LinkedList<String> futureContex,
+			int idxToken) {
+		int stWindows = idxToken - prevContexWindowSize;
+		stWindows = stWindows < 0 ? 0 : stWindows;
+		int enWindows = idxToken + futureContexWindowSize;
+		enWindows = enWindows > tokens.size() ? tokens.size() : enWindows;
+		
+		for (int i = stWindows; i < idxToken; ++i){
+			prevContext.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
+		}
+		for (int i = idxToken; i < enWindows; ++i){
+			futureContex.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
+		}
+	}
+
+
+	/**
+	 * apply manual rules to the documents and store the ouput to the featuer of document
+	 * @param docFeatuers
+	 * @param prevContext
+	 * @param futureContex
+	 * @param ann
+	 */
+	private void applyRules(FeatureMap docFeatuers,
+			LinkedList<String> prevContext, LinkedList<String> futureContex,
+			Annotation ann) {
+		//some rules for age detection
+		if ((prevContext.contains("asl") ||  
+				(futureContex.get(0).equals("m") || futureContex.get(0).equals("f"))) ||
+				(prevContext.getLast().equals("i'm"))
+				){
+			Object oldAge = docFeatuers.get(AGE_DOC_FEATURE);
+			String newAge = Utils.stringFor(getDocument(), ann);
+			String age = oldAge == null ? newAge : oldAge + ", " + newAge;
+			docFeatuers.put(AGE_DOC_FEATURE, age);
+			ann.getFeatures().put("Class", "true");
+		}
+	}
 	
-	
+	/**
+	 * A simple program that extract age from a chat conversation 
+	 * @param args
+	 * @throws IOException
+	 * @throws GateException
+	 */
 	public static void main(String[] args) throws IOException, GateException {
 		String testFile = "/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PervertedJustice/xml/batch 2/ekoplaya20.xml";
 		
