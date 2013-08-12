@@ -76,6 +76,8 @@ public class ResoluteNLPAnalyzer implements ChatMessageListener{
 			saveToTmpFile(conversation.toXML(null));
 			Document doc = Factory.newDocument(filename.toURI().toURL());
 			corpus.add(doc);
+			controller.setCorpus(corpus);
+			controller.setDocument(doc);
 			controller.execute();
 			corpus.clear();
 			Object prevDoc = conversation.setDoc(doc);

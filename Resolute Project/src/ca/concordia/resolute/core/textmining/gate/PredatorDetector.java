@@ -46,7 +46,9 @@ public class PredatorDetector extends FeatureExtractorPR{
 	private static final String ATTNAME_WORDS = "WORDS#";
 	private static final String ATTNAME_CLASS = "{{CLASS}}";
 	
-	public static final String IDX_TRAIN = PANDataSet.IDX_TRAIN;
+	static private String basePath = "";
+	
+	public static final String IDX_TRAIN = basePath + PANDataSet.IDX_TRAIN;
 	public static final String CLASSIFIER_FILE = "meta-data/classifier-logistic.obj";
 	public static final String PREDATOR_PROB_DOC_FEATURE = "Predator";
 
@@ -54,6 +56,10 @@ public class PredatorDetector extends FeatureExtractorPR{
 	private Directory dirTrain, dir;
 	private Map<String, WekaEncoder> name2Encoder;
 	
+	
+	public static void setBasePath(String basePath){
+		PredatorDetector.basePath = basePath;
+	}
 	/**
 	 * Initialize class and load the classifier from default path
 	 */
@@ -71,7 +77,7 @@ public class PredatorDetector extends FeatureExtractorPR{
 		//load classifier
 		ObjectInputStream oin;
 		try {
-			oin = new ObjectInputStream(new FileInputStream(CLASSIFIER_FILE));
+			oin = new ObjectInputStream(new FileInputStream(basePath + CLASSIFIER_FILE));
 			xModel = (Classifier) oin.readObject();
 			oin.close();
 

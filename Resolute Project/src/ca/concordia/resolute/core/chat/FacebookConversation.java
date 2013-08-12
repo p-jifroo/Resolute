@@ -33,6 +33,8 @@ public class FacebookConversation implements ConversationAPI, MessageListener{
 	 * @param api previous conversation that should be decorated
 	 */
 	public FacebookConversation(ConversationAPI api){
+		if (api == null)
+			throw new RuntimeException("Internal api can not be null");
 		this.datamodel = api;
 
 	}
