@@ -24,27 +24,41 @@ import java.io.IOException;
  *  
  * @author mjlaali
  *
- */
+ */ 
 @CreoleResource (name = "Age Candid Detector", comment = "This class extract the age of person from chat log")
 public class AgeCandidDetector extends AbstractLanguageAnalyser{
 
+	//default serial number
 	private static final long serialVersionUID = 1L;
-	private final String TARGET_ANNOTATION_TYPE = ANNIEConstants.TOKEN_ANNOTATION_TYPE;
-	private final String TARGET_FEATURE_NAME = ANNIEConstants.TOKEN_KIND_FEATURE_NAME;
-	private final String TARGET_FEATURE_VALUE = "number";
+	// the annotation that contain number
+	private static final String TARGET_ANNOTATION_TYPE = ANNIEConstants.TOKEN_ANNOTATION_TYPE;
+	// the feature name that indicate the if the token is string
+	private static final String TARGET_FEATURE_NAME = ANNIEConstants.TOKEN_KIND_FEATURE_NAME;
+	// the value of feature that indicate the token is number
+	private static final String TARGET_FEATURE_VALUE = "number";
 
 	/// a boolean feature in Token annotation for detection age.
 	public static final String TOKEN_AGE_FEATURE_NAME = "Age";
 	@Deprecated
 	public static final String AGE_ANNOTATION_TYPE = "Age";
 
+	// a general feature that is used for all number that is 
+	// detected in the document 
 	private FeatureMap numberFeature;
 
+	/**
+	 * initialize the class
+	 */
 	public AgeCandidDetector() {
 		numberFeature = Factory.newFeatureMap();
 		numberFeature.put(TARGET_FEATURE_NAME, TARGET_FEATURE_VALUE);
 	}
 
+	/**
+	 * Extract numbers between 9 and 99 and add feature to its Token annotation.
+	 * The feature name is {@value #TOKEN_AGE_FEATURE_NAME} and the value for numbers between 
+	 * 9 to 99 is true, other wise is false.
+	 */
 	@Override
 	public void execute() throws ExecutionException {
 		AnnotationSet annotations = getDocument().getAnnotations();
@@ -77,6 +91,13 @@ public class AgeCandidDetector extends AbstractLanguageAnalyser{
 		}
 	}
 
+	/**
+	 * A simple test for checking {@link AgeCandidDetector} class. 
+	 * @param args no argument is needed
+	 * @throws IOException
+	 * @throws GateException
+	 * @throws ClassNotFoundException
+	 */
 	public static void main(String[] args) throws IOException, GateException, ClassNotFoundException {
 		Gate.init();
 		Gate.getCreoleRegister().registerComponent(AgeCandidDetector.class);

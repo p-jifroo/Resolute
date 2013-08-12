@@ -7,6 +7,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Weka"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Smack"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ApacheTools"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Gate"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GATE"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -17,7 +17,9 @@ import ca.concorida.resolute.core.textmining.RuleBaseAgeDetectionTest;
  *
  */
 public class AnnotationEvaluation {
-	int cntIntersection, cntGold, cntOut;
+	private int cntIntersection, cntGold, cntOut;
+	private Annotation annGold = null, annOut = null;
+
 	
 	/**
 	 * Compute the number of correct and incorrect annotation for a GATE document. 
@@ -25,41 +27,19 @@ public class AnnotationEvaluation {
 	 * @param out output annotations for testing purpose 
 	 */
 	public void evaluate(AnnotationSet gold, AnnotationSet out){
+		//get all annotations of documents in the document order
 		List<Annotation> annListGold = Utils.inDocumentOrder(gold);
 		List<Annotation> annListOut = Utils.inDocumentOrder(out);
 
 		Iterator<Annotation> iterGold = annListGold.iterator();
 		Iterator<Annotation> iterOut = annListOut.iterator();
 		
+		//the number correct annotation, number of gold annotation, number of output annotation
 		cntIntersection = 0; cntGold = annListGold.size(); cntOut = annListOut.size();
 		
-		Annotation annGold = null, annOut = null;
+		//iter over both annotations
 		while (iterGold.hasNext() && iterOut.hasNext()){
-			//Go next
-			if (annGold == null && annOut == null){
-				annGold = iterGold.next();
-				annOut = iterOut.next();
-			} else {
-				long annGoldStart = annGold.getStartNode().getOffset().longValue();
-				long annOutStart = annOut.getStartNode().getOffset().longValue();
-				long annGoldEnd = annGold.getEndNode().getOffset().longValue();
-				long annOutEnd = annOut.getEndNode().getOffset().longValue();
-
-				if (annGoldStart < annOutStart){
-					annGold = iterGold.next();
-				} else if (annGoldStart > annOutStart){
-					annOut = iterOut.next();
-				} else {
-					if (annGoldEnd < annOutEnd)
-						annGold = iterGold.next();
-					else if (annGoldEnd > annGoldStart){
-						annOut = iterOut.next();
-					} else {
-						annGold = iterGold.next();
-						annOut = iterOut.next();
-					}
-				}
-			}
+			setAnnotation(iterGold, iterOut);
 
 			long annGoldStart = annGold.getStartNode().getOffset().longValue();
 			long annOutStart = annOut.getStartNode().getOffset().longValue();
@@ -69,6 +49,35 @@ public class AnnotationEvaluation {
 			if ( (annGoldStart == annOutStart) && (annGoldEnd == annOutEnd))
 				++cntIntersection;
 
+		}
+	}
+
+	private void setAnnotation(Iterator<Annotation> iterGold,
+			Iterator<Annotation> iterOut) {
+		
+		if (annGold == null && annOut == null){	//it is first time
+			annGold = iterGold.next();
+			annOut = iterOut.next();
+		} else {	//detect which annotation is below the other and update only the below one
+			long annGoldStart = annGold.getStartNode().getOffset().longValue();
+			long annOutStart = annOut.getStartNode().getOffset().longValue();
+			long annGoldEnd = annGold.getEndNode().getOffset().longValue();
+			long annOutEnd = annOut.getEndNode().getOffset().longValue();
+
+			if (annGoldStart < annOutStart){
+				annGold = iterGold.next();
+			} else if (annGoldStart > annOutStart){
+				annOut = iterOut.next();
+			} else {
+				if (annGoldEnd < annOutEnd)
+					annGold = iterGold.next();
+				else if (annGoldEnd > annGoldStart){
+					annOut = iterOut.next();
+				} else {	//both annotations should be updated
+					annGold = iterGold.next();
+					annOut = iterOut.next();
+				}
+			}
 		}
 	}
 	
