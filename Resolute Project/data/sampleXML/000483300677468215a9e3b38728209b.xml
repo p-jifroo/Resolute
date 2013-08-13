@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?><CONVERSATION Type="NonPredator" users="[69b0d3dfe919a6b860a9fac82de52a7e, a9b326df4e6da61c5b6f5e1058be83a2, b07211a0c7cb119232799d2119cea90f, bb76dfcc4f591df0120c3ef31743d8e2, edb259c0e0038f38bb200bc20c8cbf7e, f139aba52f9fa1394b4034a7954b2220]"><MESSAGE TIME="11:04" ID="69b0d3dfe919a6b860a9fac82de52a7e">if you have a channel with ports 1 and 2
+</MESSAGE><MESSAGE TIME="11:04" ID="69b0d3dfe919a6b860a9fac82de52a7e">and you try to send port2 down port1
+</MESSAGE><MESSAGE TIME="11:04" ID="69b0d3dfe919a6b860a9fac82de52a7e">it should obviously fail
+</MESSAGE><MESSAGE TIME="11:04" ID="69b0d3dfe919a6b860a9fac82de52a7e">because the semantics of that are just crazy weird
+</MESSAGE><MESSAGE TIME="11:04" ID="69b0d3dfe919a6b860a9fac82de52a7e">but if you send port1 down port1
+</MESSAGE><MESSAGE TIME="11:04" ID="69b0d3dfe919a6b860a9fac82de52a7e">should it also throw?
+</MESSAGE><MESSAGE TIME="11:05" ID="69b0d3dfe919a6b860a9fac82de52a7e">it would be equivalent to having a rope and throwing one end to the other end
+</MESSAGE><MESSAGE TIME="11:05" ID="69b0d3dfe919a6b860a9fac82de52a7e">&amp;quot;here's a channel!&amp;quot;
+</MESSAGE><MESSAGE TIME="11:05" ID="69b0d3dfe919a6b860a9fac82de52a7e">pretty useless, since why wouldn't you just create a new MessageChannel() for yourself
+</MESSAGE><MESSAGE TIME="11:05" ID="69b0d3dfe919a6b860a9fac82de52a7e">i would guess most cases of port1 going down port1 will be mistakes
+</MESSAGE><MESSAGE TIME="11:05" ID="69b0d3dfe919a6b860a9fac82de52a7e">so it makes sense to fail big
+</MESSAGE><MESSAGE TIME="11:05" ID="69b0d3dfe919a6b860a9fac82de52a7e">at the point of error
+</MESSAGE><MESSAGE TIME="11:06" ID="69b0d3dfe919a6b860a9fac82de52a7e">instead of having hard-to-debug problems later
+</MESSAGE><MESSAGE TIME="11:24" ID="bb76dfcc4f591df0120c3ef31743d8e2">is getting postMessage endpoint-passing flashbacks
+</MESSAGE><MESSAGE TIME="11:26" ID="69b0d3dfe919a6b860a9fac82de52a7e">bb76dfcc4f591df0120c3ef31743d8e2: hm?
+</MESSAGE><MESSAGE TIME="11:26" ID="bb76dfcc4f591df0120c3ef31743d8e2">It just sounds so similar
+</MESSAGE><MESSAGE TIME="11:27" ID="69b0d3dfe919a6b860a9fac82de52a7e">it is more than similar
+</MESSAGE><MESSAGE TIME="11:27" ID="69b0d3dfe919a6b860a9fac82de52a7e">it's the same thing
+</MESSAGE><MESSAGE TIME="11:27" ID="bb76dfcc4f591df0120c3ef31743d8e2">That would explain it then
+</MESSAGE><MESSAGE TIME="11:33" ID="69b0d3dfe919a6b860a9fac82de52a7e">roc and mjs came up with the better names
+</MESSAGE><MESSAGE TIME="11:33" ID="69b0d3dfe919a6b860a9fac82de52a7e">pipe become message channel
+</MESSAGE><MESSAGE TIME="11:33" ID="69b0d3dfe919a6b860a9fac82de52a7e">and end point and pipe end become message port
+</MESSAGE><MESSAGE TIME="11:34" ID="69b0d3dfe919a6b860a9fac82de52a7e">s/become/became/
+</MESSAGE><MESSAGE TIME="11:34" ID="69b0d3dfe919a6b860a9fac82de52a7e">i'm doing dvorak-layout typos while typing on a qwerty keyboard
+</MESSAGE><MESSAGE TIME="11:34" ID="69b0d3dfe919a6b860a9fac82de52a7e">that's freaky
+</MESSAGE><MESSAGE TIME="11:35" ID="69b0d3dfe919a6b860a9fac82de52a7e">that suggests that when i do typos, i'm hitting the keys my brain intended to hit
+</MESSAGE><MESSAGE TIME="11:35" ID="69b0d3dfe919a6b860a9fac82de52a7e">but that my brain doesn't have a good idea of what keys to hit, and that it makes mistakes based on locality of the keyboard layout
+</MESSAGE><MESSAGE TIME="11:35" ID="69b0d3dfe919a6b860a9fac82de52a7e">but that the mistakes it makes aren't necessarily related to the keyboard layout it is actually typing on
+</MESSAGE><MESSAGE TIME="11:49" ID="f139aba52f9fa1394b4034a7954b2220">http://blogs.msdn.com/ie/archive/2008/07/14/ie8-ajax-navigation.aspx
+</MESSAGE><MESSAGE TIME="12:10" ID="69b0d3dfe919a6b860a9fac82de52a7e">wish they'd say what they actually implemented :-)
+</MESSAGE><MESSAGE TIME="12:12" ID="69b0d3dfe919a6b860a9fac82de52a7e">just the hashchanged event apparently
+</MESSAGE><MESSAGE TIME="12:26" ID="bb76dfcc4f591df0120c3ef31743d8e2">The third comment makes me sad.
+</MESSAGE><MESSAGE TIME="12:34" ID="69b0d3dfe919a6b860a9fac82de52a7e">is that the one about how their markup &amp;quot;sucls&amp;quot;?
+</MESSAGE><MESSAGE TIME="12:34" ID="69b0d3dfe919a6b860a9fac82de52a7e">sucks
+</MESSAGE><MESSAGE TIME="12:34" ID="69b0d3dfe919a6b860a9fac82de52a7e">rather
+</MESSAGE><MESSAGE TIME="12:34" ID="69b0d3dfe919a6b860a9fac82de52a7e">it made me sad too
+</MESSAGE><MESSAGE TIME="12:36" ID="a9b326df4e6da61c5b6f5e1058be83a2">I'm pretty sure this is picture of the guy who wrote that comment:
+</MESSAGE><MESSAGE TIME="12:36" ID="a9b326df4e6da61c5b6f5e1058be83a2">http://upload.wikimedia.org/wikipedia/en/7/79/The_Simpsons-Jeff_Albertson.png
+</MESSAGE><MESSAGE TIME="12:37" ID="edb259c0e0038f38bb200bc20c8cbf7e">you wouldn't say
+</MESSAGE><MESSAGE TIME="12:40" ID="f139aba52f9fa1394b4034a7954b2220">when did Comic Book Guy get named Jeff Albertson?
+</MESSAGE><MESSAGE TIME="12:41" ID="f139aba52f9fa1394b4034a7954b2220">oh, apparently way back in 2005.
+</MESSAGE><MESSAGE TIME="12:43" ID="f139aba52f9fa1394b4034a7954b2220">that comment did have a point about the DOCTYPE though. The PDF contains &amp;quot;&amp;lt;!DOCTYPE&amp;gt;&amp;quot;
+</MESSAGE><MESSAGE TIME="12:46" ID="edb259c0e0038f38bb200bc20c8cbf7e">69b0d3dfe919a6b860a9fac82de52a7e, in MessagePort various definitions and references have mismatching titles, at least onmessage and ownerWindow
+</MESSAGE><MESSAGE TIME="12:47" ID="69b0d3dfe919a6b860a9fac82de52a7e">fixed onmessage a while back
+</MESSAGE><MESSAGE TIME="12:47" ID="69b0d3dfe919a6b860a9fac82de52a7e">fixed ownerWindow just now, thanks
+</MESSAGE><MESSAGE TIME="12:56" ID="edb259c0e0038f38bb200bc20c8cbf7e">Hmm, isn't another reason that the tokenizer is made case-insensitive so that xmlns and xmlns:* attributes can be used outside the context of the subtree?
+</MESSAGE><MESSAGE TIME="13:02" ID="b07211a0c7cb119232799d2119cea90f">heh, &amp;quot;Having &amp;lt;svg:a&amp;gt; be interpreted by a legacy user agent as &amp;lt;html:a&amp;gt; is perhaps not that critical, you can even add a 'src' attribute to have the link work in both contexts, so it can be used as a sort of fallback.
+</MESSAGE><MESSAGE TIME="13:05" ID="edb259c0e0038f38bb200bc20c8cbf7e">69b0d3dfe919a6b860a9fac82de52a7e, just hit refresh to verify, seems the second ownerWindow ref is still wrong
+</MESSAGE><MESSAGE TIME="13:05" ID="bb76dfcc4f591df0120c3ef31743d8e2">b07211a0c7cb119232799d2119cea90f: svg in html, appendix C
+</MESSAGE><MESSAGE TIME="13:08" ID="69b0d3dfe919a6b860a9fac82de52a7e">anne: should be ok now
+</MESSAGE><MESSAGE TIME="13:08" ID="edb259c0e0038f38bb200bc20c8cbf7e">lol, few days before the E3 Sony says it can't be bothered by Nintendo and now they announce all kinds of competitive features
+</MESSAGE></CONVERSATION>

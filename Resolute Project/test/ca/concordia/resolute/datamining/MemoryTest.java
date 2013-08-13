@@ -13,6 +13,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ca.concordia.mjlaali.gate.GATEMLPlugin;
@@ -21,6 +22,7 @@ import ca.concordia.mjlaali.tool.ConsolProgressBar;
 public class MemoryTest {
 
 	@SuppressWarnings("unchecked")
+	@Ignore
 	@Test
 	public void memoryleak() throws MalformedURLException, GateException{
 		File path = new File(GATEMLPlugin.PAN_DATASTORE_LOC);
@@ -44,9 +46,6 @@ public class MemoryTest {
 			Document doc = persistanceCorpus.get(i);
 			
 			persistanceCorpus.unloadDocument(doc, true);
-//			doc.setDataStore(null);
-//			Document copyDoc = (Document)Factory.duplicate(doc);
-//			copyDoc.getAnnotations().addAll(doc.getAnnotations());
 			
 			//processing a document. I removed this part in unit testing
 			

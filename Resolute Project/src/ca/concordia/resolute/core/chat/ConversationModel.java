@@ -124,4 +124,8 @@ public class ConversationModel implements ConversationAPI {
 		
 		return baos.toString("UTF-8");
 	}
+	
+	public List<Message> getMsgs() {
+		return msgs;
+	}
 }

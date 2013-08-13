@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?><CONVERSATION Type="NonPredator" users="[73eaf221abca1b8244e34b0b9e76ac46, ab7faae5d7b250ea8606486575f8f79c]"><MESSAGE TIME="18:55" ID="73eaf221abca1b8244e34b0b9e76ac46">hmm, seems harder than i thought to come up with evil test cases for reflecting attributes
+</MESSAGE><MESSAGE TIME="19:16" ID="ab7faae5d7b250ea8606486575f8f79c">makes his tokeniser 25% faster by manually buffering the file input stream
+</MESSAGE><MESSAGE TIME="19:17" ID="ab7faae5d7b250ea8606486575f8f79c">Seems like the actual tokenisation takes an almost negligible time, compared to the effort required to shove all the bytes into it
+</MESSAGE><MESSAGE TIME="19:18" ID="73eaf221abca1b8244e34b0b9e76ac46">.dir is the only attribute that is limited to only known values? how boring.
+</MESSAGE><MESSAGE TIME="19:19" ID="73eaf221abca1b8244e34b0b9e76ac46">shouldn't .shape be too?
+</MESSAGE><MESSAGE TIME="19:41" ID="73eaf221abca1b8244e34b0b9e76ac46">hmmm
+</MESSAGE><MESSAGE TIME="19:41" ID="73eaf221abca1b8244e34b0b9e76ac46">HTMLMenuElement.type
+</MESSAGE><MESSAGE TIME="19:42" ID="73eaf221abca1b8244e34b0b9e76ac46">has the keywords &amp;quot;1&amp;quot;, &amp;quot;a&amp;quot;, &amp;quot;A&amp;quot;, &amp;quot;i&amp;quot;, &amp;quot;I&amp;quot; (are there others?) in current browsers
+</MESSAGE><MESSAGE TIME="19:50" ID="ab7faae5d7b250ea8606486575f8f79c">IE recognises &amp;lt;menu type=disc&amp;gt; and circle and square
+</MESSAGE><MESSAGE TIME="19:51" ID="73eaf221abca1b8244e34b0b9e76ac46">ah yes
+</MESSAGE></CONVERSATION>

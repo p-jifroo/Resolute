@@ -4,6 +4,7 @@ import gate.Corpus;
 import gate.Document;
 import gate.Factory;
 import gate.Gate;
+import gate.corpora.SerialCorpusImpl;
 import gate.creole.ANNIEConstants;
 import gate.creole.ExecutionException;
 import gate.creole.ResourceInstantiationException;
@@ -43,6 +44,7 @@ import ca.concordia.mjlaali.gate.ml.ecoder.LuceneToWeka;
 import ca.concordia.mjlaali.gate.ml.ecoder.NumaratorEncoder;
 import ca.concordia.mjlaali.gate.ml.ecoder.WekaEncoder;
 import ca.concordia.mjlaali.tool.ConsolProgressBar;
+import ca.concordia.mjlaali.tool.MyGateTools;
 import ca.concordia.mjlaali.tool.XMLParser;
 import ca.concordia.resolute.core.chat.listener.XMLSaver;
 import ca.concordia.resolute.core.textmining.gate.PredatorDetector;
@@ -117,13 +119,13 @@ public class PANDataSet {
 			start = 0;
 		ConsolProgressBar progressBar = new ConsolProgressBar(end - start, 100);
 		for (int i = start; i < end; i += chunkSize){
-			Corpus testCorpus = GATEMLPlugin.copyFromCorpus(i, chunkSize, persistanceCorpus);
+			Corpus testCorpus = MyGateTools.copyFromCorpus(i, chunkSize, (SerialCorpusImpl)persistanceCorpus);
 
 			controller.setCorpus(testCorpus);
 			controller.execute();
 
 			progressBar.progress(chunkSize);
-			GATEMLPlugin.releaseCorpus(testCorpus);
+			MyGateTools.releaseCorpus(testCorpus);
 		}
 		
 		//save to file
@@ -187,7 +189,7 @@ public class PANDataSet {
 		
 		int start = persistanceCorpus.size() * 4 / 5;
 		int chunkSize = 1000;
-		Corpus testCorpus = GATEMLPlugin.copyFromCorpus(start, chunkSize, persistanceCorpus);
+		Corpus testCorpus = MyGateTools.copyFromCorpus(start, chunkSize, (SerialCorpusImpl)persistanceCorpus);
 
 		app.setCorpus(testCorpus);
 		app.execute();

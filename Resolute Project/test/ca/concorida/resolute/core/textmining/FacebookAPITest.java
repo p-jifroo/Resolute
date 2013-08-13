@@ -4,21 +4,18 @@ import gate.Gate;
 import gate.creole.SerialAnalyserController;
 import gate.util.GateException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
-import org.jivesoftware.smack.Chat;
-import org.jivesoftware.smack.ChatManagerListener;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-import ca.concordia.resolute.core.chat.ConversationAPI;
 import ca.concordia.resolute.core.chat.ConversationModel;
 import ca.concordia.resolute.core.chat.FacebookAPI;
 import ca.concordia.resolute.core.chat.FacebookConversation;
@@ -26,15 +23,38 @@ import ca.concordia.resolute.core.chat.Message;
 import ca.concordia.resolute.core.chat.listener.ConsoleMessage;
 import ca.concordia.resolute.core.chat.listener.ResoluteNLPAnalyzer;
 import ca.concordia.resolute.core.textmining.gate.ResouluteApp;
+import ca.concordia.resolute.core.textmining.gate.RuleBaseAgeDetection;
 
 public class FacebookAPITest {
 
 
 	private static final String PASSWORD = "123ABC!";
-	private static final String USER_NAME = "soen.resolute";
+	private static final String USER_NAME_SOEN = "soen.resolute";
+	private static final String USER_NAME_PRE = "soenpre.resolute";
+	
+	private static FacebookAPI pre, soen;
 
+	@BeforeClass
+	public static void init() throws XMPPException, InterruptedException{
+		pre = new FacebookAPI();
+		soen = new FacebookAPI();
+		pre.connect();
+		pre.login(USER_NAME_PRE, PASSWORD);
+		soen.connect();
+		soen.login(USER_NAME_SOEN, PASSWORD);
+
+		Thread.sleep(1000);
+
+	}
+	
+	@AfterClass
+	public static void disconnect(){
+		soen.disconnect();
+		pre.disconnect();
+	}
+	
 	@Test
-	public void test(){
+	public void testFacebookConnection(){
 		ConnectionConfiguration config = new ConnectionConfiguration(FacebookAPI.FB_XMPP_HOST, FacebookAPI.FB_XMPP_PORT);
 		config.setDebuggerEnabled(true);
 		config.setSASLAuthenticationEnabled(true);
@@ -43,7 +63,7 @@ public class FacebookAPITest {
 		XMPPConnection connection = new XMPPConnection(config);
 		try{
 			connection.connect();
-			connection.login(USER_NAME, PASSWORD);
+			connection.login(USER_NAME_SOEN, PASSWORD);
 			//auth.authenticate(login, password, host);
 		}
 		catch (XMPPException exc){
@@ -53,119 +73,89 @@ public class FacebookAPITest {
 
 	@Test
 	public void login() throws XMPPException, InterruptedException{
-		FacebookAPI soenpre = new FacebookAPI();
-		soenpre.connect();
-		soenpre.login(USER_NAME, PASSWORD);
-
-		Thread.sleep(1000);
-		System.out.println(soenpre.getOnlineFriends().size());
-
-		Assert.assertTrue(soenpre.getOnlineFriends().size() > 0);
-
-		soenpre.disconnect();
+		System.out.println(pre.getOnlineFriends().size());
+		Assert.assertTrue(pre.getOnlineFriends().size() > 0);
 	}
-
+	
 	@Test
-	public void sentMessage() throws XMPPException, InterruptedException{
+	public void sent_reciveMessage() throws XMPPException, InterruptedException, IOException{
 
-		FacebookAPI soenpre = new FacebookAPI();
-		soenpre.connect();
-		String username = USER_NAME;
-		soenpre.login(username, PASSWORD);
-
-		Thread.sleep(1000);
-		List<RosterEntry> onlineFriends = soenpre.getOnlineFriends();
+		System.out.println("FacebookAPITest.checkConsolApi(): Start the testing...");
+		ConversationModel preConversationModel = new ConversationModel();
+		FacebookConversation soenConversation = new FacebookConversation(preConversationModel);
+		FacebookConversation preConversation = new FacebookConversation(preConversationModel);
+		
+		List<RosterEntry> onlineFriends = soen.getOnlineFriends();
 		Assert.assertTrue(onlineFriends.size() > 0);
+		soenConversation.setChat(soen, onlineFriends.get(0));
 
-		System.out.println("FacebookAPITest.checkConsolApi(): Start the testing...");
-		FacebookConversation facebookConversation = new FacebookConversation(new ConversationModel());
-		facebookConversation.setChat(soenpre, onlineFriends.get(0));
-		
-		facebookConversation.addListener(new ConsoleMessage());
-		
-		facebookConversation.addMessage(new Message("hey, it is test message", "", username));
-		
-		facebookConversation.endChat();
-		soenpre.disconnect();
-
-	}
-
-	private ConsoleMessage fbml = null;
-	
-	@Test
-	public void recieveMessage() throws XMPPException, InterruptedException, IOException{
-
-		FacebookAPI soenpre = new FacebookAPI();
-		//		FBConsoleChatApp soenpre = new FBConsoleChatApp();
-		soenpre.connect();
-		XMPPConnection conn = soenpre.getConnection();
-
-		fbml = new ConsoleMessage();
-		conn.getChatManager().addChatListener(
-				new ChatManagerListener() {
-					public void chatCreated(Chat chat, boolean createdLocally) {
-						if (!createdLocally) {
-							chat.addMessageListener(fbml);
-						}
-					}
-				}
-				);
-
-		soenpre.login(USER_NAME, PASSWORD);
-
-		System.out.println("Do you get the message");
-		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-		Assert.assertTrue(input.readLine().equals("yes"));
-
-		soenpre.disconnect();
-	}
-	
-	@Test
-	public void checkConsolApi() throws XMPPException, InterruptedException, IOException{
-		FacebookAPI soenpre = new FacebookAPI();
-		soenpre.connect();
-		String username = USER_NAME;
-		soenpre.login(username, PASSWORD);
-
-		Thread.sleep(1000);
-		List<RosterEntry> onlineFriends = soenpre.getOnlineFriends();
+		onlineFriends = pre.getOnlineFriends();
 		Assert.assertTrue(onlineFriends.size() > 0);
+		preConversation.setChat(pre, onlineFriends.get(0));
 
-		System.out.println("FacebookAPITest.checkConsolApi(): Start the testing...");
-		FacebookConversation facebookConversation = new FacebookConversation(new ConversationModel());
-		facebookConversation.setChat(soenpre, onlineFriends.get(0));
+		soenConversation.addListener(new ConsoleMessage());
+		preConversation.addListener(new ConsoleMessage());
 		
-		facebookConversation.addListener(new ConsoleMessage());
+		soenConversation.addMessage(new Message("hey, it is test message", "", USER_NAME_SOEN));
 		
-		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-		String line;
-		while ((line = input.readLine()).length() > 0){
-			facebookConversation.addMessage(new Message(line, "", username));
-		}
+		soenConversation.endChat();
 		
-		facebookConversation.endChat();
-		soenpre.disconnect();
+		Thread.sleep(1000);
+		Assert.assertEquals(1, preConversationModel.getMsgs().size());
 	}
+
+//	private void checkUser(String msg) throws IOException {
+//		System.out.println(msg + " <Press Enter if it you answer is YES>");
+//		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+//		Assert.assertTrue(input.readLine().length() == 0);
+//	}
 	
-	@Test
-	public void testAgeDetection() throws GateException, IOException{
-		Gate.init();
-		ConversationAPI facebookConversation = new ConversationModel();
-		
-		SerialAnalyserController controller = new ResouluteApp().getController();
-		facebookConversation.addListener(new ResoluteNLPAnalyzer(controller));
-		facebookConversation.addListener(new ConsoleMessage());
-
-		System.out.println("FacebookAPITest.checkConsolApi(): Start the testing...");
-		
-		facebookConversation.addMessage(new Message("police", "", "asl?"));
-		facebookConversation.addMessage(new Message("predator", "", "25 m montreal"));
-		
-		Assert.assertTrue(facebookConversation.getDoc().getFeatures().get("Age").equals("25"));
-		
-		facebookConversation.endChat();
-
-	}
+//	@Test
+//	public void checkConsolApi() throws XMPPException, InterruptedException, IOException{
+//		FacebookAPI soenpre = new FacebookAPI();
+//		soenpre.connect();
+//		String username = USER_NAME_SOEN;
+//		soenpre.login(username, PASSWORD);
+//
+//		Thread.sleep(1000);
+//		List<RosterEntry> onlineFriends = soenpre.getOnlineFriends();
+//		Assert.assertTrue(onlineFriends.size() > 0);
+//
+//		System.out.println("FacebookAPITest.checkConsolApi(): Start the testing...");
+//		FacebookConversation facebookConversation = new FacebookConversation(new ConversationModel());
+//		facebookConversation.setChat(soenpre, onlineFriends.get(0));
+//		
+//		facebookConversation.addListener(new ConsoleMessage());
+//		
+//		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+//		String line;
+//		while ((line = input.readLine()).length() > 0){
+//			facebookConversation.addMessage(new Message(line, "", username));
+//		}
+//		
+//		facebookConversation.endChat();
+//		soenpre.disconnect();
+//	}
+	
+//	@Test
+//	public void testAgeDetection() throws GateException, IOException{
+//		Gate.init();
+//		ConversationAPI facebookConversation = new ConversationModel();
+//		
+//		SerialAnalyserController controller = new ResouluteApp().getController();
+//		facebookConversation.addListener(new ResoluteNLPAnalyzer(controller));
+//		facebookConversation.addListener(new ConsoleMessage());
+//
+//		System.out.println("FacebookAPITest.checkConsolApi(): Start the testing...");
+//		
+//		facebookConversation.addMessage(new Message("police", "", "asl?"));
+//		facebookConversation.addMessage(new Message("predator", "", "25 m montreal"));
+//		
+//		Assert.assertTrue(facebookConversation.getDoc().getFeatures().get("Age").equals("25"));
+//		
+//		facebookConversation.endChat();
+//
+//	}
 
 	
 	@Test
@@ -173,10 +163,11 @@ public class FacebookAPITest {
 		Gate.init();
 		FacebookAPI soenpre = new FacebookAPI();
 		soenpre.connect();
-		String username = USER_NAME;
+		String username = USER_NAME_SOEN;
 		soenpre.login(username, PASSWORD);
 
-		FacebookConversation facebookConversation = new FacebookConversation(new ConversationModel());
+		ConversationModel api = new ConversationModel();
+		FacebookConversation facebookConversation = new FacebookConversation(api);
 		
 		SerialAnalyserController controller = new ResouluteApp().getController();
 		facebookConversation.addListener(new ResoluteNLPAnalyzer(controller));
@@ -188,15 +179,13 @@ public class FacebookAPITest {
 		Assert.assertTrue(onlineFriends.size() > 0);
 		facebookConversation.setChat(soenpre, onlineFriends.get(0));
 		
-		System.out.println("Try to ask the age of person by saying \"asl?\" and answer it from other facebook account");
-		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-		String line;
-		while ((line = input.readLine()).length() > 0){
-			facebookConversation.addMessage(new Message(line, "", username));
-		}
-		
+		facebookConversation.addMessage(new Message("asl?", "", username));
+		facebookConversation.addMessage(new Message("15 m montreal", "", username));
+
 		facebookConversation.endChat();
-		soenpre.disconnect();
+		
+		String age = api.getDoc().getFeatures().get(RuleBaseAgeDetection.AGE_DOC_FEATURE).toString();
+		Assert.assertEquals("15", age);
 	}
 	
 

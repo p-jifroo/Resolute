@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8'?><CONVERSATION Type="NonPredator" users="[a9b326df4e6da61c5b6f5e1058be83a2, c5e3539121c4944f2bbe097b425ee774, e29be37c2febc43a0d21a1f8efa351af]"><MESSAGE TIME="08:02" ID="e29be37c2febc43a0d21a1f8efa351af">hello world
+</MESSAGE><MESSAGE TIME="08:02" ID="e29be37c2febc43a0d21a1f8efa351af">i finally sent my last comments on widgets-reqs, i'm very sorry about the delay in commenting
+</MESSAGE><MESSAGE TIME="08:13" ID="c5e3539121c4944f2bbe097b425ee774">Timeless, thanks!!!!
+</MESSAGE><MESSAGE TIME="08:14" ID="e29be37c2febc43a0d21a1f8efa351af">um, dev.w3.org doesn't like me
+</MESSAGE><MESSAGE TIME="08:14" ID="e29be37c2febc43a0d21a1f8efa351af">otherwise i was going to try to read landscape or something
+</MESSAGE><MESSAGE TIME="08:15" ID="c5e3539121c4944f2bbe097b425ee774">Nah, leave the landscape for now
+</MESSAGE><MESSAGE TIME="08:15" ID="c5e3539121c4944f2bbe097b425ee774">If you can help me patch a few of the holes in the packaging, that would be greatly appriciated
+</MESSAGE><MESSAGE TIME="08:15" ID="c5e3539121c4944f2bbe097b425ee774">let me check in the latest draft
+</MESSAGE><MESSAGE TIME="08:16" ID="c5e3539121c4944f2bbe097b425ee774">hmmm... looks like dev.w3.org is down
+</MESSAGE><MESSAGE TIME="08:16" ID="c5e3539121c4944f2bbe097b425ee774">I'll email sysreq
+</MESSAGE><MESSAGE TIME="08:21" ID="c5e3539121c4944f2bbe097b425ee774">Timeless, I still need you to respond to the other comments I made in response to the discussions we had on gmail chat. Is that ok?
+</MESSAGE><MESSAGE TIME="08:24" ID="e29be37c2febc43a0d21a1f8efa351af">um, lemme see if i can find it
+</MESSAGE><MESSAGE TIME="08:25" ID="e29be37c2febc43a0d21a1f8efa351af">err, and url for packaging? it doesn't seem to be in http://dev.w3.org/2006/waf/
+</MESSAGE><MESSAGE TIME="08:25" ID="c5e3539121c4944f2bbe097b425ee774">Yeah, dev is down. I've emailed the W3C team
+</MESSAGE><MESSAGE TIME="08:26" ID="e29be37c2febc43a0d21a1f8efa351af">starves
+</MESSAGE><MESSAGE TIME="08:28" ID="e29be37c2febc43a0d21a1f8efa351af">can you give me a hint for how i can find your reply/pending bits
+</MESSAGE><MESSAGE TIME="08:28" ID="e29be37c2febc43a0d21a1f8efa351af">my mailbox isn't exactly well organized :)
+</MESSAGE><MESSAGE TIME="08:28" ID="c5e3539121c4944f2bbe097b425ee774">no probs. one sec (or just search for from: c5e3539121c4944f2bbe097b425ee774)
+</MESSAGE><MESSAGE TIME="08:29" ID="c5e3539121c4944f2bbe097b425ee774">This is the email
+</MESSAGE><MESSAGE TIME="08:29" ID="c5e3539121c4944f2bbe097b425ee774">http://lists.w3.org/Archives/Public/public-webapps/2008AprJun/0440.html
+</MESSAGE><MESSAGE TIME="08:30" ID="e29be37c2febc43a0d21a1f8efa351af">that's in 21-37 i guess :)
+</MESSAGE><MESSAGE TIME="08:30" ID="e29be37c2febc43a0d21a1f8efa351af">gives up and uses the web link
+</MESSAGE><MESSAGE TIME="08:30" ID="c5e3539121c4944f2bbe097b425ee774">subject is [widgets] Timeless' Widgets Requirements LC
+</MESSAGE><MESSAGE TIME="08:31" ID="e29be37c2febc43a0d21a1f8efa351af">yeah, that worked better :)
+</MESSAGE><MESSAGE TIME="08:33" ID="c5e3539121c4944f2bbe097b425ee774">hehe, reading your current comments... noting &amp;quot;which are just embarrassing&amp;quot; and &amp;quot;this doesn't look like something that should be published&amp;quot;. LOL :D
+</MESSAGE><MESSAGE TIME="08:35" ID="c5e3539121c4944f2bbe097b425ee774">My response to spelling mistakes is &amp;quot;I put them in on purpose to keep you on your toes:)&amp;quot;
+</MESSAGE><MESSAGE TIME="08:39" ID="e29be37c2febc43a0d21a1f8efa351af">i had a doc with something like &amp;quot;it is expected that no one will read this&amp;quot;
+</MESSAGE><MESSAGE TIME="08:40" ID="e29be37c2febc43a0d21a1f8efa351af">i think i actually had one person complain
+</MESSAGE><MESSAGE TIME="08:40" ID="e29be37c2febc43a0d21a1f8efa351af">i can't remember how many months it took before i got that one person
+</MESSAGE><MESSAGE TIME="08:40" ID="e29be37c2febc43a0d21a1f8efa351af">and it was from a publication group, not from the approval group
+</MESSAGE><MESSAGE TIME="08:41" ID="e29be37c2febc43a0d21a1f8efa351af">so i only need to deal w/ COMMENTS and QUESTIONS, i hope
+</MESSAGE><MESSAGE TIME="08:41" ID="e29be37c2febc43a0d21a1f8efa351af">doesn't have time to read the rest
+</MESSAGE><MESSAGE TIME="08:42" ID="c5e3539121c4944f2bbe097b425ee774">yep
+</MESSAGE><MESSAGE TIME="08:42" ID="c5e3539121c4944f2bbe097b425ee774">that's fine
+</MESSAGE><MESSAGE TIME="08:44" ID="e29be37c2febc43a0d21a1f8efa351af">sighs
+</MESSAGE><MESSAGE TIME="08:44" ID="e29be37c2febc43a0d21a1f8efa351af">the problem i have w/ commenting is people ask me to comment on their comments
+</MESSAGE><MESSAGE TIME="08:44" ID="e29be37c2febc43a0d21a1f8efa351af">it's a never ending battle
+</MESSAGE><MESSAGE TIME="08:44" ID="c5e3539121c4944f2bbe097b425ee774">hehe. Yeah, sorry about that.
+</MESSAGE><MESSAGE TIME="08:44" ID="c5e3539121c4944f2bbe097b425ee774">Promise not to do another round
+</MESSAGE><MESSAGE TIME="08:44" ID="e29be37c2febc43a0d21a1f8efa351af">i told someone to change an alarm clock pick sound dialog title
+</MESSAGE><MESSAGE TIME="08:45" ID="e29be37c2febc43a0d21a1f8efa351af">so they changed it
+</MESSAGE><MESSAGE TIME="08:45" ID="e29be37c2febc43a0d21a1f8efa351af">and sent me the new thing
+</MESSAGE><MESSAGE TIME="08:45" ID="e29be37c2febc43a0d21a1f8efa351af">which had an &amp;quot;add sound&amp;quot; option
+</MESSAGE><MESSAGE TIME="08:45" ID="e29be37c2febc43a0d21a1f8efa351af">sadly, &amp;quot;add&amp;quot; means &amp;quot;replace current custom sound&amp;quot;, not &amp;quot;add another custom sound&amp;quot;
+</MESSAGE><MESSAGE TIME="08:45" ID="e29be37c2febc43a0d21a1f8efa351af">(there's no &amp;quot;remove&amp;quot;)
+</MESSAGE><MESSAGE TIME="08:45" ID="e29be37c2febc43a0d21a1f8efa351af">so i decided to read their spec
+</MESSAGE><MESSAGE TIME="08:45" ID="e29be37c2febc43a0d21a1f8efa351af">which had something like 'beet' in one of the other human displayable strings
+</MESSAGE><MESSAGE TIME="08:45" ID="e29be37c2febc43a0d21a1f8efa351af">as a pair to 'been'
+</MESSAGE><MESSAGE TIME="08:46" ID="e29be37c2febc43a0d21a1f8efa351af">at which point i decided that i probably should read all of their strings...
+</MESSAGE><MESSAGE TIME="08:55" ID="c5e3539121c4944f2bbe097b425ee774">woops. Yeah, once you go down one rat hole...
+</MESSAGE><MESSAGE TIME="08:57" ID="e29be37c2febc43a0d21a1f8efa351af">hrm, i need a way to say &amp;quot;ok&amp;quot; which doesn't sound like &amp;quot;ok&amp;quot; :o
+</MESSAGE><MESSAGE TIME="08:57" ID="e29be37c2febc43a0d21a1f8efa351af">&amp;quot;understood&amp;quot;?
+</MESSAGE><MESSAGE TIME="09:02" ID="c5e3539121c4944f2bbe097b425ee774">got it
+</MESSAGE><MESSAGE TIME="09:05" ID="c5e3539121c4944f2bbe097b425ee774">understood works
+</MESSAGE><MESSAGE TIME="09:05" ID="c5e3539121c4944f2bbe097b425ee774">or &amp;quot;whatever...&amp;quot;
+</MESSAGE><MESSAGE TIME="09:05" ID="c5e3539121c4944f2bbe097b425ee774">:)
+</MESSAGE><MESSAGE TIME="09:06" ID="e29be37c2febc43a0d21a1f8efa351af">hrm, interesting
+</MESSAGE><MESSAGE TIME="09:07" ID="e29be37c2febc43a0d21a1f8efa351af">motivation is no longer sentences
+</MESSAGE><MESSAGE TIME="09:07" ID="e29be37c2febc43a0d21a1f8efa351af">much better :)
+</MESSAGE><MESSAGE TIME="09:07" ID="e29be37c2febc43a0d21a1f8efa351af">wait, it kinda is
+</MESSAGE><MESSAGE TIME="09:07" ID="e29be37c2febc43a0d21a1f8efa351af">please lose the '.'s at the end :)
+</MESSAGE><MESSAGE TIME="09:07" ID="e29be37c2febc43a0d21a1f8efa351af">or oh!
+</MESSAGE><MESSAGE TIME="09:07" ID="e29be37c2febc43a0d21a1f8efa351af">yeah sorry, i'm generally reading markup in text/plain
+</MESSAGE><MESSAGE TIME="09:08" ID="e29be37c2febc43a0d21a1f8efa351af">sighs
+</MESSAGE><MESSAGE TIME="09:08" ID="c5e3539121c4944f2bbe097b425ee774">I'll add the &amp;quot;and&amp;quot; to those
+</MESSAGE><MESSAGE TIME="09:08" ID="e29be37c2febc43a0d21a1f8efa351af">ok
+</MESSAGE><MESSAGE TIME="09:09" ID="e29be37c2febc43a0d21a1f8efa351af">sorry, reading html hurts my eyes :)
+</MESSAGE><MESSAGE TIME="09:09" ID="e29be37c2febc43a0d21a1f8efa351af">i was actually reading the thing in a &amp;lt;textarea&amp;gt; using the windows High Contrast Black theme (in the dark)
+</MESSAGE><MESSAGE TIME="09:09" ID="c5e3539121c4944f2bbe097b425ee774">You know, they have these things called &amp;quot;browsers&amp;quot; that actually render the HTML
+</MESSAGE><MESSAGE TIME="09:09" ID="e29be37c2febc43a0d21a1f8efa351af">yeah, those are what hurt my eyes :)
+</MESSAGE><MESSAGE TIME="09:09" ID="c5e3539121c4944f2bbe097b425ee774">hehe
+</MESSAGE><MESSAGE TIME="09:10" ID="e29be37c2febc43a0d21a1f8efa351af">all these things in italics, and strnage lines all over the place...
+</MESSAGE><MESSAGE TIME="09:10" ID="e29be37c2febc43a0d21a1f8efa351af">and fancy colors....
+</MESSAGE><MESSAGE TIME="09:10" ID="c5e3539121c4944f2bbe097b425ee774">Well, the aim was to have a pretty spec even to distract from the fact that the content might be crap.
+</MESSAGE><MESSAGE TIME="09:12" ID="c5e3539121c4944f2bbe097b425ee774">suddenly remembers all this is being logged &amp;gt;.&amp;lt;
+</MESSAGE><MESSAGE TIME="09:12" ID="e29be37c2febc43a0d21a1f8efa351af">and you wonder why i don't like using irc for this stuff :)
+</MESSAGE><MESSAGE TIME="09:12" ID="e29be37c2febc43a0d21a1f8efa351af">i'm not saying that html is a bad thing... i do work on a browser after all
+</MESSAGE><MESSAGE TIME="09:13" ID="e29be37c2febc43a0d21a1f8efa351af">it's just that sometimes when you're tired and trying to review language, the last thing you want are distractions
+</MESSAGE><MESSAGE TIME="09:13" ID="e29be37c2febc43a0d21a1f8efa351af">the good thinig about html is that it can degrade to plain text
+</MESSAGE><MESSAGE TIME="09:13" ID="e29be37c2febc43a0d21a1f8efa351af">unlike some of the other formats i've dealt with of late, which make reviewing much more painful
+</MESSAGE><MESSAGE TIME="09:13" ID="c5e3539121c4944f2bbe097b425ee774">yeah, I totally get that. I use my screen reader for proof reading.
+</MESSAGE><MESSAGE TIME="09:13" ID="e29be37c2febc43a0d21a1f8efa351af">heh
+</MESSAGE><MESSAGE TIME="09:14" ID="c5e3539121c4944f2bbe097b425ee774">Seriously, using both audio and visual helps quite a bit (in my case at least).
+</MESSAGE><MESSAGE TIME="09:15" ID="c5e3539121c4944f2bbe097b425ee774">People think I'm rude when I go to meeting because I always have my headset on, but that's only because I use my screen reader religiously.
+</MESSAGE><MESSAGE TIME="09:16" ID="c5e3539121c4944f2bbe097b425ee774">Maybe I'll start carrying around a blind walking cane so people will not bother me.
+</MESSAGE><MESSAGE TIME="09:17" ID="e29be37c2febc43a0d21a1f8efa351af">heh
+</MESSAGE><MESSAGE TIME="09:23" ID="c5e3539121c4944f2bbe097b425ee774">a9b326df4e6da61c5b6f5e1058be83a2, any chance you would check what's up with http://dev.w3.org?
+</MESSAGE><MESSAGE TIME="09:24" ID="c5e3539121c4944f2bbe097b425ee774">Hi! btw :)
+</MESSAGE><MESSAGE TIME="09:24" ID="a9b326df4e6da61c5b6f5e1058be83a2">c5e3539121c4944f2bbe097b425ee774: will do
+</MESSAGE><MESSAGE TIME="09:24" ID="a9b326df4e6da61c5b6f5e1058be83a2">you can't check in right now?
+</MESSAGE><MESSAGE TIME="09:25" ID="c5e3539121c4944f2bbe097b425ee774">thanks Mike
+</MESSAGE><MESSAGE TIME="09:25" ID="c5e3539121c4944f2bbe097b425ee774">no, just can't access it through the web... have not tried checking in
+</MESSAGE><MESSAGE TIME="09:25" ID="a9b326df4e6da61c5b6f5e1058be83a2">or ah
+</MESSAGE><MESSAGE TIME="09:25" ID="a9b326df4e6da61c5b6f5e1058be83a2">ah
+</MESSAGE><MESSAGE TIME="09:26" ID="c5e3539121c4944f2bbe097b425ee774">Attempting a check in
+</MESSAGE><MESSAGE TIME="09:26" ID="a9b326df4e6da61c5b6f5e1058be83a2">they did some maintenance on the machine yesterday or day before
+</MESSAGE><MESSAGE TIME="09:26" ID="c5e3539121c4944f2bbe097b425ee774">checking successful
+</MESSAGE><MESSAGE TIME="09:26" ID="a9b326df4e6da61c5b6f5e1058be83a2">yeah, everything seems to be working from command line OK
+</MESSAGE><MESSAGE TIME="09:27" ID="c5e3539121c4944f2bbe097b425ee774">yeah, I guess just the web interface is down
+</MESSAGE><MESSAGE TIME="09:27" ID="a9b326df4e6da61c5b6f5e1058be83a2">yeah, so seems to be a problem just with the dev.w3 web server
+</MESSAGE><MESSAGE TIME="09:27" ID="a9b326df4e6da61c5b6f5e1058be83a2">anyway, will wake up the system team
+</MESSAGE><MESSAGE TIME="09:27" ID="c5e3539121c4944f2bbe097b425ee774">I sent them an email (sysreq)
+</MESSAGE><MESSAGE TIME="09:28" ID="a9b326df4e6da61c5b6f5e1058be83a2">oh, OK
+</MESSAGE><MESSAGE TIME="09:28" ID="a9b326df4e6da61c5b6f5e1058be83a2">well, then we just got to wait I guess
+</MESSAGE><MESSAGE TIME="09:28" ID="c5e3539121c4944f2bbe097b425ee774">about an hour ago. No problems. Probably all sleeping
+</MESSAGE><MESSAGE TIME="09:28" ID="a9b326df4e6da61c5b6f5e1058be83a2">I don't have shell access to that machine myself
+</MESSAGE><MESSAGE TIME="09:31" ID="c5e3539121c4944f2bbe097b425ee774">bb in 10
+</MESSAGE></CONVERSATION>

@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?><CONVERSATION Type="NonPredator" users="[25812bf456959aa5f28dc570f341a3ba, 5d5b78699e57104f2fa03bbdf7b9197b, a11aabeeceeae6b8cb5d12ea06b56554, b844a0a98f81c321afe1d38ae37f3c28]"><MESSAGE TIME="13:14" ID="b844a0a98f81c321afe1d38ae37f3c28">channel #whatwg
+</MESSAGE><MESSAGE TIME="13:14" ID="25812bf456959aa5f28dc570f341a3ba">is 'WHATWG (HTML5) -- http://www.whatwg.org/ -- Logs: http://krijnhoetmer.nl/irc-logs/ -- Please leave your sense of logic at the door, thanks!'
+</MESSAGE><MESSAGE TIME="13:14" ID="5d5b78699e57104f2fa03bbdf7b9197b">by a11aabeeceeae6b8cb5d12ea06b56554 on Tue Dec 18 21:41:19
+</MESSAGE><MESSAGE TIME="13:17" ID="a11aabeeceeae6b8cb5d12ea06b56554">I guess I should treat &amp;lt;pre&amp;gt;&amp;lt;dfn&amp;gt;foo  bar&amp;lt;/dfn&amp;gt;&amp;lt;span&amp;gt;foo bar&amp;lt;/span&amp;gt;&amp;lt;/pre&amp;gt; specially
+</MESSAGE></CONVERSATION>

@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?><CONVERSATION Type="Predator" users="[9fdcde97c1cb33fe4e9f6aab1d84bc76, a9b326df4e6da61c5b6f5e1058be83a2, b8810fee2f4a71f849f3f7409546d1d9, e3fb62ebfa4f36acf5cbff6a6ed0f2e0]"><MESSAGE TIME="13:04" ID="a9b326df4e6da61c5b6f5e1058be83a2">b8810fee2f4a71f849f3f7409546d1d9 - do you have any set of test cases for non-conformant HTML5?
+</MESSAGE><MESSAGE TIME="13:12" ID="b8810fee2f4a71f849f3f7409546d1d9">a9b326df4e6da61c5b6f5e1058be83a2: there are some in the syntax module
+</MESSAGE><MESSAGE TIME="13:12" ID="b8810fee2f4a71f849f3f7409546d1d9">a9b326df4e6da61c5b6f5e1058be83a2: I've also used Anne's WF 2.0 tests, but using those in the test harness in now broken
+</MESSAGE><MESSAGE TIME="13:13" ID="b8810fee2f4a71f849f3f7409546d1d9">as the spec stabilizes it makes sense to write more tests
+</MESSAGE><MESSAGE TIME="13:19" ID="a9b326df4e6da61c5b6f5e1058be83a2">b8810fee2f4a71f849f3f7409546d1d9 - btw, do you have a good estimate of many man hours you have put into work on the conformance checker?
+</MESSAGE><MESSAGE TIME="13:19" ID="a9b326df4e6da61c5b6f5e1058be83a2">... including hours of any others that contributed to it significantly (fantasai, maybe?)
+</MESSAGE><MESSAGE TIME="13:20" ID="a9b326df4e6da61c5b6f5e1058be83a2">I'm just curious
+</MESSAGE><MESSAGE TIME="13:25" ID="b8810fee2f4a71f849f3f7409546d1d9">a9b326df4e6da61c5b6f5e1058be83a2: no estimate. lots
+</MESSAGE><MESSAGE TIME="13:27" ID="b8810fee2f4a71f849f3f7409546d1d9">a9b326df4e6da61c5b6f5e1058be83a2: the upper bound I can give is that there's no code written by me in there that predates October 2003.
+</MESSAGE><MESSAGE TIME="13:28" ID="b8810fee2f4a71f849f3f7409546d1d9">And the validation service started around November 2004, IIRC.
+</MESSAGE><MESSAGE TIME="13:28" ID="b8810fee2f4a71f849f3f7409546d1d9">Work towards applying it to HTML began in the summer of 2005.
+</MESSAGE><MESSAGE TIME="13:30" ID="b8810fee2f4a71f849f3f7409546d1d9">The November 2004 date is my guess about starting design and implementation. it wasn't public until 2005
+</MESSAGE><MESSAGE TIME="13:32" ID="a9b326df4e6da61c5b6f5e1058be83a2">b8810fee2f4a71f849f3f7409546d1d9 - OK. Was just thinking mainly about the HTML5 part, and thinking it might be good to eventually try to have an rough estimate of how many man hours are needed to implement a complete HTML5 conformance checker.
+</MESSAGE><MESSAGE TIME="13:33" ID="b8810fee2f4a71f849f3f7409546d1d9">a9b326df4e6da61c5b6f5e1058be83a2: I cannot give an estimate that would be even remotely accurate. But I can say that the parser isn't the biggest part, so the reasoning &amp;quot;we have a parser in language foo, let's make a conformance checker&amp;quot; is missing the point
+</MESSAGE><MESSAGE TIME="13:33" ID="a9b326df4e6da61c5b6f5e1058be83a2">b8810fee2f4a71f849f3f7409546d1d9 - OK
+</MESSAGE><MESSAGE TIME="13:35" ID="a9b326df4e6da61c5b6f5e1058be83a2">One thing I wonder is, given all the dependencies of your Java implementation, how much extra work it will be to try to implement a checker in another language.
+</MESSAGE><MESSAGE TIME="13:35" ID="a9b326df4e6da61c5b6f5e1058be83a2">other languages
+</MESSAGE><MESSAGE TIME="13:36" ID="b8810fee2f4a71f849f3f7409546d1d9">a9b326df4e6da61c5b6f5e1058be83a2: the biggest question is if you another programming language plus the same schemas or a totally independent impl
+</MESSAGE><MESSAGE TIME="13:36" ID="a9b326df4e6da61c5b6f5e1058be83a2">which I guess maybe are likely to lack equivalent libraries to depend on
+</MESSAGE><MESSAGE TIME="13:37" ID="b8810fee2f4a71f849f3f7409546d1d9">a9b326df4e6da61c5b6f5e1058be83a2: but it is going to be a lot of work. I'm far from considering the Java impl complete
+</MESSAGE><MESSAGE TIME="13:39" ID="b8810fee2f4a71f849f3f7409546d1d9">afk
+</MESSAGE><MESSAGE TIME="13:39" ID="a9b326df4e6da61c5b6f5e1058be83a2">b8810fee2f4a71f849f3f7409546d1d9 - yeah, I know. about the schemas, seems like it would probably not be the most productive approach to try to implement something in another language that didn't also rely partly on schema validation
+</MESSAGE><MESSAGE TIME="13:57" ID="a9b326df4e6da61c5b6f5e1058be83a2">http://www.elementary-group-standards.com/html/html5-doctype-is-unrecognized.html
+</MESSAGE><MESSAGE TIME="13:57" ID="a9b326df4e6da61c5b6f5e1058be83a2">Sean Fraser
+</MESSAGE><MESSAGE TIME="13:58" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">&amp;quot;Sean Fraser posted this on January 22, 2007 08:30 AM.&amp;quot;
+</MESSAGE><MESSAGE TIME="13:58" ID="a9b326df4e6da61c5b6f5e1058be83a2">I reckon I should probably add his feed to the nascent HTML5 blog aggregator
+</MESSAGE><MESSAGE TIME="13:59" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">he does post a lot about it
+</MESSAGE><MESSAGE TIME="13:59" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">seems only fair
+</MESSAGE><MESSAGE TIME="13:59" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">s/only fair/correct/
+</MESSAGE><MESSAGE TIME="14:02" ID="a9b326df4e6da61c5b6f5e1058be83a2">OK, added him
+</MESSAGE><MESSAGE TIME="14:02" ID="a9b326df4e6da61c5b6f5e1058be83a2">http://people.w3.org/mike/planet/html5/
+</MESSAGE><MESSAGE TIME="14:03" ID="a9b326df4e6da61c5b6f5e1058be83a2">any others anybody's aware of that ought to be there, let me know
+</MESSAGE><MESSAGE TIME="14:08" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">lol
+</MESSAGE><MESSAGE TIME="14:09" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">e3fb62ebfa4f36acf5cbff6a6ed0f2e0: can I have your ear?
+</MESSAGE><MESSAGE TIME="14:10" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">e3fb62ebfa4f36acf5cbff6a6ed0f2e0: i am wondering if Opera implements, or plans to implement safari's &amp;quot;device-pixel-ratio&amp;quot; css media query. would you know?
+</MESSAGE><MESSAGE TIME="14:11" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">that's the ration between CSS and normal pixels?
+</MESSAGE><MESSAGE TIME="14:12" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">ratio*
+</MESSAGE><MESSAGE TIME="14:13" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">yes
+</MESSAGE><MESSAGE TIME="14:13" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">that could be useful
+</MESSAGE><MESSAGE TIME="14:13" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">e.g. 1 CSS pixel to 3 device pixels would be 3.0
+</MESSAGE><MESSAGE TIME="14:14" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">euh
+</MESSAGE><MESSAGE TIME="14:15" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">1 to 4 makes 2 sounds more logical
+</MESSAGE><MESSAGE TIME="14:15" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">anyway, if it's defined somewhere it might make sense to look into it
+</MESSAGE><MESSAGE TIME="14:15" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">it's one-dimentional
+</MESSAGE><MESSAGE TIME="14:15" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">well it's explained here http://webkit.org/blog/55/high-dpi-web-sites/
+</MESSAGE><MESSAGE TIME="14:15" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">one-dimentional?
+</MESSAGE><MESSAGE TIME="14:15" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">though hyatt hasn't written up a formal defn i think
+</MESSAGE><MESSAGE TIME="14:16" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">I learned that blog posts (with cat pictures on top) are not specs
+</MESSAGE><MESSAGE TIME="14:16" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">some years ago
+</MESSAGE><MESSAGE TIME="14:16" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">oh so you mean 1 to 9 makes 3?
+</MESSAGE><MESSAGE TIME="14:16" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">no
+</MESSAGE><MESSAGE TIME="14:16" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">it doesn't make sense to scale a pixel in just one direction
+</MESSAGE><MESSAGE TIME="14:17" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">unless I'm missing something
+</MESSAGE><MESSAGE TIME="14:17" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">the ratio is applied in both directions
+</MESSAGE><MESSAGE TIME="14:17" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">yeah, so 1 to 9 makes 3
+</MESSAGE><MESSAGE TIME="14:17" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">think of it as the sqrt of the difference in number of pixels
+</MESSAGE><MESSAGE TIME="14:18" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">or better yet, think of it as the zoom factor
+</MESSAGE><MESSAGE TIME="14:19" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">200% zoom would produce a factor of 2.0  (i.e. 2.0 squared more pixels per image)
+</MESSAGE><MESSAGE TIME="14:19" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">I think I understand it correctly as I explained above
+</MESSAGE><MESSAGE TIME="14:20" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">okay :)
+</MESSAGE><MESSAGE TIME="14:24" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">so I'm guessing opera doesn't support it yet. who would be the person to speak to about getting it implemented?
+</MESSAGE><MESSAGE TIME="14:27" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">you could file a bug report
+</MESSAGE><MESSAGE TIME="14:27" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">where to?
+</MESSAGE><MESSAGE TIME="14:29" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">http://bugs.opera.com/
+</MESSAGE><MESSAGE TIME="14:30" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">should I request an account or use the plebeian option?
+</MESSAGE><MESSAGE TIME="14:30" ID="e3fb62ebfa4f36acf5cbff6a6ed0f2e0">I suppose the latter
+</MESSAGE><MESSAGE TIME="14:30" ID="9fdcde97c1cb33fe4e9f6aab1d84bc76">ok
+</MESSAGE></CONVERSATION>
