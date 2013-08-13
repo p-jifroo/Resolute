@@ -32,7 +32,7 @@ import ca.concordia.resolute.core.textmining.gate.ResouluteApp;
 
 public class RuleBaseAgeDetectionTest {
 	private static final String GATE_CORPUS_WITH_AGE = "data/index";
-	private static Corpus persistCorp = null;
+	private static SerialCorpusImpl persistCorp = null;
 	
 	public static Corpus readPresistanceCorpus(File path) throws PersistenceException, MalformedURLException, ResourceInstantiationException{
 		//reopen it
@@ -54,8 +54,9 @@ public class RuleBaseAgeDetectionTest {
 		//		Gate.init();
 		System.out.println("RuleBaseAgeDetectionTest.init()");
 		Gate.init();
+
 		final File DS_DIR = new File(GATE_CORPUS_WITH_AGE);
-		persistCorp = readPresistanceCorpus(DS_DIR);
+		persistCorp = (SerialCorpusImpl) readPresistanceCorpus(DS_DIR);
 
 	}
 
@@ -71,6 +72,7 @@ public class RuleBaseAgeDetectionTest {
 		for (Document doc: persistCorp){
 			++idx;
 			Document docWithAge = app.annotateAge(doc);
+			persistCorp.unloadDocument(doc, false);
 			evaluator.evaluate(doc.getAnnotations().get(AgeCandidDetector.AGE_ANNOTATION_TYPE, featureMap), 
 					docWithAge.getAnnotations().get(AgeCandidDetector.AGE_ANNOTATION_TYPE, featureMap));
 			System.out.println(idx + "-" + doc.getName() + ":\t" + evaluator.getPrecision() + ", " + evaluator.getRecall());
@@ -78,7 +80,6 @@ public class RuleBaseAgeDetectionTest {
 			totalGold += evaluator.getCntGold();
 			totalOutput += evaluator.getCntOut();
 			Factory.deleteResource(docWithAge);
-			persistCorp.unloadDocument(doc);
 			
 		}
 		
