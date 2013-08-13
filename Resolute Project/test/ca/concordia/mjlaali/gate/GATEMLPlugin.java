@@ -24,16 +24,13 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import weka.core.Instances;
-import weka.core.converters.ConverterUtils.DataSource;
 import ca.concordia.mjlaali.gate.ml.DocumentInstance;
 import ca.concordia.mjlaali.gate.ml.FeatureExtractorPR;
 import ca.concordia.mjlaali.gate.ml.FeatureValue;
@@ -48,9 +45,6 @@ public class GATEMLPlugin {
 	private static final String DATA_SAMPLE_XML_FLD = "data/sampleXML";
 	private static final String ATTNAME_WORDS = "WORDS#";
 	private static final String ATTNAME_CLASS = "{{CLASS}}";
-	private static final String ARFF_FILE = "output/test.arff";
-	private static final String APP_FEATURE_EXTRACTOR = "output/test.xapp";
-	private static final String IDX_TRAIN = "output/idx_test";
 	public static final String ORIGINAL_MARKUPS = "Original markups";
 
 	public static final String PAN_DATASTORE_LOC = 
