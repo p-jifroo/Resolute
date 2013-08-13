@@ -105,7 +105,7 @@ public class GATEMLPlugin {
 		for (Document doc: testCorpus){
 			iwc = new IndexWriterConfig(Version.LUCENE_35, new WhitespaceAnalyzer(Version.LUCENE_35));
 			iwc.setOpenMode(OpenMode.CREATE);
-			iw = new IndexWriter(dirTrain, iwc);
+			iw = new IndexWriter(dirTest, iwc);
 			featureExtractor.setIndexer(iw);
 			
 			app.setDocument(doc);
