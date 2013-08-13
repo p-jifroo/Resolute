@@ -31,6 +31,7 @@ import ca.concordia.mjlaali.gate.ml.ecoder.BooleanVectorEncoder;
 import ca.concordia.mjlaali.gate.ml.ecoder.LuceneToWeka;
 import ca.concordia.mjlaali.gate.ml.ecoder.NumaratorEncoder;
 import ca.concordia.mjlaali.gate.ml.ecoder.WekaEncoder;
+import ca.concordia.resolute.core.chat.Message;
 import ca.concordia.resolute.core.chat.listener.XMLSaver;
 import ca.concordia.resolute.datamining.PANConverter;
 import ca.concordia.resolute.datamining.PANDataSet;
@@ -118,7 +119,11 @@ public class PredatorDetector extends FeatureExtractorPR{
 			//classify the extracted instance.
 			double[] probs = xModel.distributionForInstance(data.instance(0));
 			//store result to GATE document
-			getDocument().getFeatures().put(PREDATOR_PROB_DOC_FEATURE, "" + probs[1]);
+			
+			String prob = "" + (int)(probs[1] * 100) + "%";
+			if (getDocument().getAnnotations(GATEMLPlugin.ORIGINAL_MARKUPS).get(Message.XML_TAG_NAME_MESSAGE).size() < 15)
+				prob = "?";
+			getDocument().getFeatures().put(PREDATOR_PROB_DOC_FEATURE, prob);
 		} catch (Exception e) {
 			throw new ExecutionException(e);
 		}
