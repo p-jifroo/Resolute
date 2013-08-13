@@ -31,6 +31,7 @@ import ca.concordia.resolute.core.textmining.gate.AgeCandidDetector;
 import ca.concordia.resolute.core.textmining.gate.ResouluteApp;
 
 public class RuleBaseAgeDetectionTest {
+	private static final String GATE_CORPUS_WITH_AGE = "data/index";
 	private static Corpus persistCorp = null;
 	
 	public static Corpus readPresistanceCorpus(File path) throws PersistenceException, MalformedURLException, ResourceInstantiationException{
@@ -53,7 +54,7 @@ public class RuleBaseAgeDetectionTest {
 		//		Gate.init();
 		System.out.println("RuleBaseAgeDetectionTest.init()");
 		Gate.init();
-		final File DS_DIR = new File("/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/index");
+		final File DS_DIR = new File(GATE_CORPUS_WITH_AGE);
 		persistCorp = readPresistanceCorpus(DS_DIR);
 
 	}
