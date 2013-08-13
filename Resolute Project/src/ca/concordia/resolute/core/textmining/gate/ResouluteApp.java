@@ -9,6 +9,7 @@ import gate.creole.ANNIEConstants;
 import gate.creole.ExecutionException;
 import gate.creole.ResourceInstantiationException;
 import gate.creole.SerialAnalyserController;
+import gate.persist.PersistenceException;
 import gate.util.GateException;
 import gate.util.persistence.PersistenceManager;
 
@@ -22,42 +23,57 @@ import java.io.IOException;
  *
  */
 public class ResouluteApp {
-
-	private SerialAnalyserController controller;
 	private Corpus corpus;
-	
+	private SerialAnalyserController completeController;
+	private SerialAnalyserController ageController;
+
+
 	public ResouluteApp() throws GateException, IOException {
 		Gate.getCreoleRegister().registerComponent(AgeCandidDetector.class);
 		Gate.getCreoleRegister().registerComponent(RuleBaseAgeDetection.class);
 		Gate.getCreoleRegister().registerComponent(PredatorDetector.class);
-		controller = (SerialAnalyserController) 
+
+		corpus = Factory.newCorpus("Corpus");
+
+	}
+
+
+	private SerialAnalyserController createController(boolean includePredator) throws PersistenceException, IOException,
+			ResourceInstantiationException {
+		SerialAnalyserController controller = (SerialAnalyserController) 
 				PersistenceManager.loadObjectFromFile(new File(new File( 
 						Gate.getPluginsHome(), ANNIEConstants.PLUGIN_DIR), 
 						ANNIEConstants.DEFAULT_FILE));
 
 		controller.add((ProcessingResource)Factory.createResource(AgeCandidDetector.class.getName()));
 		controller.add((ProcessingResource)Factory.createResource(RuleBaseAgeDetection.class.getName()));
-		controller.add((ProcessingResource)Factory.createResource(PredatorDetector.class.getName()));
-
-		corpus = Factory.newCorpus("Corpus");
+		if (includePredator)
+			controller.add((ProcessingResource)Factory.createResource(PredatorDetector.class.getName()));
+		return controller;
 	}
 	
-	
-	public Document annotateAge(Document aDoc) throws ResourceInstantiationException, ExecutionException{
-		Document annotatedDoc = (Document) Factory.duplicate(aDoc);
+	public Document annotateAge(Document aDoc) throws ResourceInstantiationException, ExecutionException, PersistenceException, IOException{
+		if (ageController == null)
+			ageController = createController(false);
 
-		corpus.add(annotatedDoc);
-		controller.setCorpus(corpus);
-		controller.execute();
+		corpus.add(aDoc);
+		ageController.setCorpus(corpus);
+		ageController.execute();
 		corpus.clear();
 
-		return annotatedDoc;
+		Factory.deleteResource(corpus);
+		return aDoc;
 	}
 	
 	/**
 	 * @return GATE pipeline that contains all the necessary tools for analyzing a chat conversation
+	 * @throws IOException 
+	 * @throws ResourceInstantiationException 
+	 * @throws PersistenceException 
 	 */
-	public SerialAnalyserController getController() {
-		return controller;
+	public SerialAnalyserController getController() throws PersistenceException, ResourceInstantiationException, IOException {
+		if (completeController == null)
+			completeController = createController(true);
+		return completeController;
 	}
 }
