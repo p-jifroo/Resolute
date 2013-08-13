@@ -61,7 +61,7 @@ public class ResoluteNLPAnalyzer implements ChatMessageListener{
 
 	private void saveToTmpFile(String content) throws IOException{
 		filename.delete();
-	    BufferedWriter bw = new BufferedWriter(new FileWriter(filename, true));
+	    BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
 	    bw.write(content);
 	    bw.close();
 	}

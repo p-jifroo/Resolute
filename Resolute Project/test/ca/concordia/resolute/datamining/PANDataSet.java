@@ -52,7 +52,7 @@ import ca.concorida.resolute.core.textmining.RuleBaseAgeDetectionTest;
 
 public class PANDataSet {
 	
-	public static final String IDX_TRAIN = "output/idxPANTrainComplete";
+	public static final String IDX_TRAIN = "meta-data/idxPANTrain";
 	private static final String ATTNAME_WORDS = "WORDS#";
 	private static final String ATTNAME_CLASS = "{{CLASS}}";
 	private static final String ARFF_FILE = "output/pan_trainComplete.arff";
