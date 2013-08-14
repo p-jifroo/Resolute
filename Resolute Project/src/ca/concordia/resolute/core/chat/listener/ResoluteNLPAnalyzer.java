@@ -14,13 +14,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-
-import ca.concordia.resolute.core.chat.ConversationAPI;
 import ca.concordia.resolute.core.chat.ChatMessageListener;
+import ca.concordia.resolute.core.chat.ConversationAPI;
 import ca.concordia.resolute.core.chat.ConversationModel;
 import ca.concordia.resolute.core.chat.Message;
 
@@ -87,10 +83,7 @@ public class ResoluteNLPAnalyzer implements ChatMessageListener{
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			e.printStackTrace();
-		} catch (UnsupportedEncodingException | XMLStreamException
-				| FactoryConfigurationError e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
