@@ -61,7 +61,6 @@ public class ResouluteApp {
 		ageController.execute();
 		corpus.clear();
 
-		Factory.deleteResource(corpus);
 		return aDoc;
 	}
 	
