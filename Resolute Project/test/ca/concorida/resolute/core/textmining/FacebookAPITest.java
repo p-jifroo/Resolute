@@ -99,7 +99,7 @@ public class FacebookAPITest {
 		
 		soenConversation.endChat();
 		
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		Assert.assertEquals(2, conversationModel.getMsgs().size());
 	}
 
