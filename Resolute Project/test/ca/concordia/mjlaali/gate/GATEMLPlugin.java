@@ -114,7 +114,7 @@ public class GATEMLPlugin {
 			iw.close();
 			LuceneToWeka luceneToWekaTest = new LuceneToWeka(dirTest, name2Encoder);
 			Instances structure = luceneToWekaTest.buildStructure(dirTrain, "test");
-			if (testCorpus == null) 
+			if (testData == null) 
 				testData = structure;
 			
 			for (int i = 0; i < luceneToWekaTest.getNumDoc(); ++i)
