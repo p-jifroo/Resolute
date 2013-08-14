@@ -83,6 +83,7 @@ public class RuleBaseAgeDetectionTest {
 			
 		}
 		
+		System.out.println(totalCorrect);
 		System.out.println("Total : Precision = [" + (double)totalCorrect / totalOutput + "]\tRecall = [" + (double)totalCorrect / totalGold + "]");
 		
 	}
