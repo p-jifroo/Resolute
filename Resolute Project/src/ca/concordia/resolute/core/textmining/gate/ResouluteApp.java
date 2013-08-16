@@ -52,7 +52,7 @@ public class ResouluteApp {
 		return controller;
 	}
 	
-	public Document annotateAge(Document aDoc) throws ResourceInstantiationException, ExecutionException, PersistenceException, IOException{
+	public void annotateAge(Document aDoc) throws ResourceInstantiationException, ExecutionException, PersistenceException, IOException{
 		if (ageController == null)
 			ageController = createController(false);
 
@@ -62,7 +62,6 @@ public class ResouluteApp {
 		corpus.clear();
 
 		Factory.deleteResource(corpus);
-		return aDoc;
 	}
 	
 	/**

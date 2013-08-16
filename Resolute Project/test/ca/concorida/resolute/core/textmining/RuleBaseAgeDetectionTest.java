@@ -1,5 +1,7 @@
 package ca.concorida.resolute.core.textmining;
 
+import gate.Annotation;
+import gate.AnnotationSet;
 import gate.Corpus;
 import gate.DataStore;
 import gate.Document;
@@ -7,6 +9,7 @@ import gate.Factory;
 import gate.FeatureMap;
 import gate.Gate;
 import gate.Resource;
+import gate.Utils;
 import gate.corpora.SerialCorpusImpl;
 import gate.creole.ANNIEConstants;
 import gate.creole.ExecutionException;
@@ -59,7 +62,6 @@ public class RuleBaseAgeDetectionTest {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void precision() throws GateException, IOException{
 		AnnotationEvaluation evaluator = new AnnotationEvaluation();
@@ -68,22 +70,47 @@ public class RuleBaseAgeDetectionTest {
 		featureMap.put("Class", "true");
 		int totalCorrect = 0, totalGold = 0, totalOutput = 0;
 		int idx = 0;
+		int numTest = 10;
 		for (Document doc: persistCorp){
 			++idx;
-			Document docWithAge = app.annotateAge(doc);
 			persistCorp.unloadDocument(doc, false);
+			Document docWithAge = (Document) Factory.duplicate(doc);
+			
+			System.out.println(doc.getFeatures().get("gate.SourceURL"));
+			
+			app.annotateAge(docWithAge);
 			evaluator.evaluate(doc.getAnnotations().get(AgeCandidDetector.AGE_ANNOTATION_TYPE, featureMap), 
 					docWithAge.getAnnotations().get(AgeCandidDetector.AGE_ANNOTATION_TYPE, featureMap));
+
+			System.out.println("===> Real one");
+			nicePrint(doc, doc.getAnnotations().get(AgeCandidDetector.AGE_ANNOTATION_TYPE, featureMap));
+			System.out.println("===> Detected one");
+			nicePrint(docWithAge, docWithAge.getAnnotations().get(AgeCandidDetector.AGE_ANNOTATION_TYPE, featureMap));
+			
 			System.out.println(idx + "-" + doc.getName() + ":\t" + evaluator.getPrecision() + ", " + evaluator.getRecall());
 			totalCorrect += evaluator.getCntIntersection();
 			totalGold += evaluator.getCntGold();
 			totalOutput += evaluator.getCntOut();
 			Factory.deleteResource(docWithAge);
-			
+			Factory.deleteResource(doc);
+			if (idx == numTest)
+				break;
 		}
 		
-		System.out.println("Total : Precision = [" + (double)totalCorrect / totalOutput + "]\tRecall = [" + (double)totalCorrect / totalGold + "]");
+		double precision = (double)totalCorrect / totalOutput;
+		double recall = (double)totalCorrect / totalGold;
+		System.out.println("Total : Precision = [" + precision + "]\tRecall = [" + recall + "]");
 		
+		Assert.assertTrue(precision > 0.9);
+		Assert.assertTrue(recall > 0.9);
+	}
+	
+	public void nicePrint(Document doc, AnnotationSet toPrint){
+		List<Annotation> inDocumentOrder = Utils.inDocumentOrder(toPrint);
+		for (Annotation ann: inDocumentOrder){
+			System.out.print(Utils.stringFor(doc, ann));
+			System.out.println("\t" + ann.getStartNode().getOffset());
+		}
 	}
 	
 	@Test

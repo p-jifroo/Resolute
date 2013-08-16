@@ -38,8 +38,8 @@ public class AgeCandidDetector extends AbstractLanguageAnalyser{
 	private static final String TARGET_FEATURE_VALUE = "number";
 
 	/// a boolean feature in Token annotation for detection age.
-	public static final String TOKEN_AGE_FEATURE_NAME = "Age";
 	@Deprecated
+	public static final String TOKEN_AGE_FEATURE_NAME = "Age";
 	public static final String AGE_ANNOTATION_TYPE = "Age";
 
 	// a general feature that is used for all number that is 

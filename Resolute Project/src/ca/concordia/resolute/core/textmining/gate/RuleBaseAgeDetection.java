@@ -34,25 +34,31 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 	private static final long serialVersionUID = 1L;
 	private int prevContexWindowSize = 10;
 	private int futureContexWindowSize = 5;
+	
+	private LinkedList<String> prevContext = new LinkedList<>(), futureContex = new LinkedList<>();
+	private String prevString, futureString;
 
 	@Override
 	public void execute() throws ExecutionException {
 		AnnotationSet docAnnSet = getDocument().getAnnotations();
-		@SuppressWarnings("deprecation")
 		AnnotationSet ageCandid = docAnnSet.get(AgeCandidDetector.AGE_ANNOTATION_TYPE);
 		List<Annotation> tokens = Utils.inDocumentOrder(docAnnSet.get(ANNIEConstants.TOKEN_ANNOTATION_TYPE));
 		
 		FeatureMap docFeatuers = getDocument().getFeatures();
-		LinkedList<String> prevContext = new LinkedList<>(), futureContex = new LinkedList<>();
 		for (Annotation ann: ageCandid){
 			prevContext.clear();
 			futureContex.clear();
 			
 			int idxToken = findPosition(tokens, ann);
 
-			createContextWindows(tokens, prevContext, futureContex, idxToken);
+			createContextWindows(tokens, idxToken);
+			System.out.println("\nRuleBaseAgeDetection.execute()\t/*******");
+			System.out.print("RuleBaseAgeDetection.createContextWindows(): " + tokens.get(idxToken));
+			System.out.println("RuleBaseAgeDetection.createContextWindows(): " + prevContext + prevString);
+			System.out.println("RuleBaseAgeDetection.createContextWindows(): " + futureContex + futureString);
+			System.out.println("RuleBaseAgeDetection.execute()\t*******/");
 			
-			applyRules(docFeatuers, prevContext, futureContex, ann);
+			applyRules(docFeatuers, ann);
 		}
 		
 		if (docFeatuers.get(AGE_DOC_FEATURE) == null){
@@ -83,22 +89,35 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 	 * @param futureContex
 	 * @param idxToken
 	 */
-	private void createContextWindows(List<Annotation> tokens,
-			LinkedList<String> prevContext, LinkedList<String> futureContex,
-			int idxToken) {
+	private void createContextWindows(List<Annotation> tokens, int idxToken) {
+		prevContext.clear();
+		futureContex.clear();
+		
+		
 		int stWindows = idxToken - prevContexWindowSize;
 		stWindows = stWindows < 0 ? 0 : stWindows;
 		int enWindows = idxToken + futureContexWindowSize;
 		enWindows = enWindows > tokens.size() ? tokens.size() : enWindows;
 		
+		StringBuffer sb = new StringBuffer();
 		for (int i = stWindows; i < idxToken; ++i){
-			prevContext.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
+			String strWord = tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase();
+			prevContext.add(strWord);
+			sb.append(strWord);
+			sb.append(" ");
 		}
-		for (int i = idxToken; i < enWindows; ++i){
-			futureContex.add(tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase());
-		}
-	}
+		prevString = sb.toString().trim();
 
+		sb.setLength(0);
+		for (int i = idxToken + 1; i < enWindows; ++i){
+			String strWord = tokens.get(i).getFeatures().get(ANNIEConstants.TOKEN_STRING_FEATURE_NAME).toString().toLowerCase();
+			futureContex.add(strWord);
+			sb.append(strWord);
+			sb.append(" ");
+		}
+		futureString = sb.toString().trim();
+	}
+	
 
 	/**
 	 * apply manual rules to the documents and store the ouput to the featuer of document
@@ -107,13 +126,16 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 	 * @param futureContex
 	 * @param ann
 	 */
-	private void applyRules(FeatureMap docFeatuers,
-			LinkedList<String> prevContext, LinkedList<String> futureContex,
-			Annotation ann) {
+	private void applyRules(FeatureMap docFeatuers,	Annotation ann) {
 		//some rules for age detection
-		if ((prevContext.contains("asl") ||  
-				(futureContex.get(0).equals("m") || futureContex.get(0).equals("f"))) ||
-				(prevContext.getLast().equals("i'm"))
+		if (       prevContext.contains("asl")   
+				|| prevString.contains("age ?")
+				|| prevString.contains("a / s")  
+				|| (futureContex.get(0).equals("m") || futureContex.get(0).equals("f"))
+				|| (futureString.startsWith("/ m") || futureString.startsWith("/ f"))
+				|| (prevString.endsWith("im") || prevString.endsWith("i am") || prevContext.getLast().equals("'m"))
+				|| (prevString.contains("how old") && (prevString.contains("ru") || (prevString.contains("r u")))) 
+				|| (prevContext.contains("okay") && prevContext.contains("bein"))
 				){
 			Object oldAge = docFeatuers.get(AGE_DOC_FEATURE);
 			String newAge = Utils.stringFor(getDocument(), ann);
@@ -136,7 +158,7 @@ public class RuleBaseAgeDetection extends AbstractLanguageAnalyser{
 		ResouluteApp app = new ResouluteApp();
 		Document doc = Factory.newDocument(new File(testFile).toURI().toURL());
 		
-		Document annotateAge = app.annotateAge(doc);
-		System.out.println(annotateAge.getFeatures().get(AGE_DOC_FEATURE));
+		app.annotateAge(doc);
+		System.out.println(doc.getFeatures().get(AGE_DOC_FEATURE));
 	}
 }
