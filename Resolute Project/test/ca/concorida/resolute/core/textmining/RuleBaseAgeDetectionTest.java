@@ -74,7 +74,7 @@ public class RuleBaseAgeDetectionTest {
 		for (Document doc: persistCorp){
 			++idx;
 			persistCorp.unloadDocument(doc, false);
-			Document docWithAge = (Document) Factory.duplicate(doc);
+			Document docWithAge = Factory.newDocument(doc.getContent().toString());
 			
 			System.out.println(doc.getFeatures().get("gate.SourceURL"));
 			

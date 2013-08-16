@@ -22,7 +22,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import ca.concordia.mjlaali.gate.ml.FeatureExtractorPR;
-import ca.concordia.resolute.datamining.PANConverter;
 
 /**
  * this class used for learning gate api test
@@ -72,7 +71,7 @@ public class GATEApi {
 	 */
 	@Test
 	public void presistOutput() throws ResourceInstantiationException, MalformedURLException, ExecutionException, PersistenceException, UnsupportedOperationException, SecurityException{
-		String sampelDocXMLFile = PANConverter.PAN_FLD + "xml/0a0acab63770dcec26a3c5e5b4cf2d30.xml";
+		String sampelDocXMLFile = GATEMLPlugin.DATA_TEST_XML_FLD + "000faaf7e2b73bf0756b95cb2540c764.xml";
 		File DS_DIR = new File("output/test/dsDir");
 
 		deleteFile(DS_DIR);

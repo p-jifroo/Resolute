@@ -42,14 +42,14 @@ import ca.concordia.resolute.core.chat.listener.XMLSaver;
 import ca.concordia.resolute.datamining.PANConverter;
 
 public class GATEMLPlugin {
-	private static final String DATA_SAMPLE_XML_FLD = "data/sampleXML";
 	private static final String ATTNAME_WORDS = "WORDS#";
 	private static final String ATTNAME_CLASS = "{{CLASS}}";
 	public static final String ORIGINAL_MARKUPS = "Original markups";
 
 	public static final String PAN_DATASTORE_LOC = 
 			"/Volumes/Data/Users/Majid/Documents/Course/Concordia/SOEN6951/data-set/PAN 2012/pan12-sexual-predator-identification-training-data-2012-05-01/sds";
-	private static final String DATA_TEST_XML_FLD = "data/test";
+	public static final String DATA_TEST_XML_FLD = "data/test/";
+	public static final String DATA_SAMPLE_XML_FLD = "data/sampleXML/";
 
 	private static Corpus trainCorpus, testCorpus;
 	private static Instances trainData, testData;
@@ -60,6 +60,7 @@ public class GATEMLPlugin {
 		Gate.init();
 		Gate.getCreoleRegister().registerComponent(FeatureExtractorPR.class);
 		trainCorpus = Factory.newCorpus("Sample");
+		testCorpus = Factory.newCorpus("test");
 		ExtensionFileFilter filter = new ExtensionFileFilter("XML files", "xml"); 
 		trainCorpus.populate(new File(DATA_SAMPLE_XML_FLD).toURI().toURL(), filter, "UTF-8", false);
 		testCorpus.populate(new File(DATA_TEST_XML_FLD).toURI().toURL(), filter, "UTF-8", false);
@@ -104,7 +105,7 @@ public class GATEMLPlugin {
 		for (Document doc: testCorpus){
 			iwc = new IndexWriterConfig(Version.LUCENE_35, new WhitespaceAnalyzer(Version.LUCENE_35));
 			iwc.setOpenMode(OpenMode.CREATE);
-			iw = new IndexWriter(dirTrain, iwc);
+			iw = new IndexWriter(dirTest, iwc);
 			featureExtractor.setIndexer(iw);
 			
 			app.setDocument(doc);
@@ -112,10 +113,11 @@ public class GATEMLPlugin {
 
 			iw.close();
 			LuceneToWeka luceneToWekaTest = new LuceneToWeka(dirTest, name2Encoder);
-			if (testCorpus == null)
-				testData = luceneToWekaTest.buildStructure(dirTrain, "test");
+			Instances structure = luceneToWekaTest.buildStructure(dirTrain, "test");
+			if (testData == null) 
+				testData = structure;
 			
-			for (int i = 0; i < luceneToWeka.getNumDoc(); ++i)
+			for (int i = 0; i < luceneToWekaTest.getNumDoc(); ++i)
 				testData.add(luceneToWekaTest.getInstance(i));
 			
 			if (testData.classIndex() == -1)
