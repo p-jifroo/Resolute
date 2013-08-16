@@ -81,9 +81,9 @@ public class FacebookAPITest {
 	public void sent_reciveMessage() throws XMPPException, InterruptedException, IOException{
 
 		System.out.println("FacebookAPITest.checkConsolApi(): Start the testing...");
-		ConversationModel preConversationModel = new ConversationModel();
-		FacebookConversation soenConversation = new FacebookConversation(preConversationModel);
-		FacebookConversation preConversation = new FacebookConversation(preConversationModel);
+		ConversationModel conversationModel = new ConversationModel();
+		FacebookConversation soenConversation = new FacebookConversation(conversationModel);
+		FacebookConversation preConversation = new FacebookConversation(conversationModel);
 		
 		List<RosterEntry> onlineFriends = soen.getOnlineFriends();
 		Assert.assertTrue(onlineFriends.size() > 0);
@@ -93,15 +93,14 @@ public class FacebookAPITest {
 		Assert.assertTrue(onlineFriends.size() > 0);
 		preConversation.setChat(pre, onlineFriends.get(0));
 
-		soenConversation.addListener(new ConsoleMessage());
-		preConversation.addListener(new ConsoleMessage());
+		conversationModel.addListener(new ConsoleMessage());
 		
 		soenConversation.addMessage(new Message("hey, it is test message", "", USER_NAME_SOEN));
 		
 		soenConversation.endChat();
 		
-		Thread.sleep(1000);
-		Assert.assertEquals(1, preConversationModel.getMsgs().size());
+		Thread.sleep(2000);
+		Assert.assertEquals(2, conversationModel.getMsgs().size());
 	}
 
 //	private void checkUser(String msg) throws IOException {

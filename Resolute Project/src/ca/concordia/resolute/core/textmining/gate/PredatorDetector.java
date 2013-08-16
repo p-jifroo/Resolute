@@ -83,7 +83,9 @@ public class PredatorDetector extends FeatureExtractorPR{
 			oin.close();
 
 			dirTrain = FSDirectory.open(new File(IDX_TRAIN));
-		} catch (ClassNotFoundException | IOException e) {
+		} catch (ClassNotFoundException e){
+			
+		} catch (IOException e) {
 			throw new ResourceInstantiationException(e);
 		}
 		//initialize lucene directory
